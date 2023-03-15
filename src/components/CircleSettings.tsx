@@ -26,7 +26,7 @@ const CircleSettings: React.FC<CircleSettingsProps> = ({ setCircleSketch }) => {
   return (
     <div>
       <form id="settings" onSubmit={handleSubmit(onSubmit)}>
-        <div className="w-full bg-[#DB9D47] flex flex-col items-left gap-3">
+        <div className="w-full flex flex-col items-left gap-3">
           <div>
             Size
             <input

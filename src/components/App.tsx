@@ -24,9 +24,12 @@ const App: React.FC = () => {
       <div className="drawer">
         <input id="settings-drawer" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content">
-          <div className="bg-[#3A3042] flex justify-between px-2 gap-2 ">
-            <h1 className="text-[#EDFFD9] text-4xl">CIRCLES</h1>
-            <div onClick={() => setGameResult(undefined)}>
+          <div className="bg-[#3A3042] flex justify-between px-2">
+            <h1 className="text-[#EDFFD9] text-4xl xl:text-7xl">CIRCLES</h1>
+            <div
+              onClick={() => setGameResult(undefined)}
+              className="self-center"
+            >
               <Button
                 form="settings"
                 type="submit"
@@ -59,7 +62,7 @@ const App: React.FC = () => {
         </div>
         <div className="drawer-side">
           <label htmlFor="settings-drawer" className="drawer-overlay"></label>
-          <ul className="menu p-4 bg-[#DB9D47] max-w-xs">
+          <ul className="menu p-4 bg-[#EDFFD9]/50 w-48 pt-10">
             <CircleSettings setCircleSketch={setCircleSketch} />
           </ul>
         </div>
