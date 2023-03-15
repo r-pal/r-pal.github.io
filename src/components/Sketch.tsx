@@ -4,13 +4,13 @@ import { Inputs } from "./CircleSettings";
 type SketchProps = {
   circleSketch: Inputs;
   setGameResult: (value: "won" | "lost" | undefined) => void;
-  // setGameLive: (value: boolean) => void;
+  setGameLive: (value: boolean) => void;
 };
 
 const Sketch: React.FC<SketchProps> = ({
   circleSketch,
   setGameResult,
-  // setGameLive,
+  setGameLive,
 }) => {
   console.log("hello");
   const diameter = circleSketch.radius * 2;
@@ -22,7 +22,7 @@ const Sketch: React.FC<SketchProps> = ({
   };
 
   const bannerHeight = () => {
-    if (window.innerWidth > 768) {
+    if (window.innerWidth > 1280) {
       return 66;
     }
     return 35;
@@ -31,6 +31,7 @@ const Sketch: React.FC<SketchProps> = ({
   const canvasHeight = () => {
     if (window.innerHeight > 200) {
       return window.innerHeight - bannerHeight();
+      // bannerHeight();
     } else return 200;
   };
   const sketch = (s: P5CanvasInstance) => {
@@ -58,12 +59,12 @@ const Sketch: React.FC<SketchProps> = ({
         // lose condition
         if (y < 0) {
           setGameResult("lost");
-          // setGameLive(false);
+          setGameLive(false);
         }
         // win condition
         if (y >= s.height) {
           setGameResult("won");
-          // setGameLive(false);
+          setGameLive(false);
         }
         // in case it jiggles off screen x-axis:
         if (x < 0) {

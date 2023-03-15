@@ -6,9 +6,16 @@ type ButtonProps = {
   type: "button" | "submit" | "reset";
   variant?: boolean;
   form?: string;
+  disabled?: boolean;
 };
 
-const Button: React.FC<ButtonProps> = ({ text, variant, form, type }) => {
+const Button: React.FC<ButtonProps> = ({
+  text,
+  variant,
+  form,
+  type,
+  disabled,
+}) => {
   return (
     <button
       className={clsx(
@@ -17,6 +24,7 @@ const Button: React.FC<ButtonProps> = ({ text, variant, form, type }) => {
       )}
       form={form}
       type={type}
+      disabled={disabled}
     >
       {text}
     </button>

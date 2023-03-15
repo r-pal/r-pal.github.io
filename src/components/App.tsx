@@ -24,14 +24,13 @@ const App: React.FC = () => {
       //enter winner board
     }
   }, [gameResult]);
-  console.log(gameLive);
 
   const buttonText = () => {
     if (gameResult) {
       return "Play again";
     }
     if (gameLive) {
-      return "";
+      return "Repeatedly click that circle!";
     }
     return "Start game";
   };
@@ -51,6 +50,7 @@ const App: React.FC = () => {
                 type="submit"
                 text={buttonText()}
                 variant
+                disabled={gameLive}
               />
             </div>
             <button>
@@ -64,10 +64,10 @@ const App: React.FC = () => {
               <Sketch
                 circleSketch={circleSketch}
                 setGameResult={setGameResult}
-                // setGameLive={setGameLive}
+                setGameLive={setGameLive}
               />
             )}
-            <h1 className="text-[#EDFFD9] text-5xl md:text-9xl place-content-center grid h-screen">
+            <h1 className="text-[#EDFFD9] text-5xl md:text-9xl place-content-center grid">
               {gameResult === "won" && "WINNER"}
               {gameResult === "lost" && "YOU LOSE"}
             </h1>
@@ -76,7 +76,7 @@ const App: React.FC = () => {
         </div>
         <div className="drawer-side">
           <label htmlFor="settings-drawer" className="drawer-overlay"></label>
-          <ul className="menu p-4 bg-[#EDFFD9]/50 w-48 pt-10">
+          <ul className="menu p-4 bg-[#EDFFD9]/50 w-48 pt-10 xl:pt-20">
             <CircleSettings setCircleSketch={setCircleSketch} />
           </ul>
         </div>
