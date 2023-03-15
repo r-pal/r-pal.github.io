@@ -17,11 +17,10 @@ type CircleSettingsProps = {
 
 const CircleSettings: React.FC<CircleSettingsProps> = ({ setCircleSketch }) => {
   const [selectedColourHex, setSelectedColourHex] = useState("#EDFFD9");
-  const { register, handleSubmit, control } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     setCircleSketch(data);
   };
-  console.log(selectedColourHex);
 
   return (
     <div>
@@ -84,7 +83,7 @@ const CircleSettings: React.FC<CircleSettingsProps> = ({ setCircleSketch }) => {
               max="10"
               defaultValue={1}
               className="range range-md"
-              id="jigglyness"
+              id="jiggliness"
               {...register("jiggliness")}
             />
           </div>

@@ -7,9 +7,14 @@ import Sketch from "./Sketch";
 
 const App: React.FC = () => {
   const [gameResult, setGameResult] = useState<"won" | "lost">();
+  const [gameLive, setGameLive] = useState(false);
   const [wins, setWins] = useState(0);
   const [circleSketch, setCircleSketch] = useState<Inputs>();
-  const [jiggliness, setJiggliness] = useState(0);
+
+  const startGame = () => {
+    setGameResult(undefined);
+    setGameLive(true);
+  };
 
   useEffect(() => {
     if (gameResult === "won") {
@@ -19,21 +24,32 @@ const App: React.FC = () => {
       //enter winner board
     }
   }, [gameResult]);
+  console.log(gameLive);
+
+  const buttonText = () => {
+    if (gameResult) {
+      return "Play again";
+    }
+    if (gameLive) {
+      return "";
+    }
+    return "Start game";
+  };
+
   return (
     <div>
       <div className="drawer">
         <input id="settings-drawer" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content">
           <div className="bg-[#3A3042] flex justify-between px-2">
-            <h1 className="text-[#EDFFD9] text-4xl xl:text-7xl">CIRCLES</h1>
-            <div
-              onClick={() => setGameResult(undefined)}
-              className="self-center"
-            >
+            <h1 className="text-[#EDFFD9] h-[35px] text-4xl xl:text-7xl xl:h-[66px]">
+              CIRCLES
+            </h1>
+            <div onClick={() => startGame()} className="self-center">
               <Button
                 form="settings"
                 type="submit"
-                text={gameResult ? "Play again" : "Start game"}
+                text={buttonText()}
                 variant
               />
             </div>
@@ -47,16 +63,14 @@ const App: React.FC = () => {
             {circleSketch && gameResult === undefined && (
               <Sketch
                 circleSketch={circleSketch}
-                jiggliness={jiggliness}
                 setGameResult={setGameResult}
+                // setGameLive={setGameLive}
               />
             )}
-            {gameResult === "won" && (
-              <h1 className="text-[#EDFFD9] text-9xl text-center ">WINNER</h1>
-            )}
-            {gameResult === "lost" && (
-              <h1 className="text-[#EDFFD9] text-9xl text-center ">YOU LOSE</h1>
-            )}
+            <h1 className="text-[#EDFFD9] text-5xl md:text-9xl place-content-center grid h-screen">
+              {gameResult === "won" && "WINNER"}
+              {gameResult === "lost" && "YOU LOSE"}
+            </h1>
           </div>
           <Footer />
         </div>

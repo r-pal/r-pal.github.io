@@ -3,29 +3,36 @@ import { Inputs } from "./CircleSettings";
 
 type SketchProps = {
   circleSketch: Inputs;
-  jiggliness: number;
   setGameResult: (value: "won" | "lost" | undefined) => void;
+  // setGameLive: (value: boolean) => void;
 };
 
 const Sketch: React.FC<SketchProps> = ({
   circleSketch,
-  jiggliness,
   setGameResult,
+  // setGameLive,
 }) => {
+  console.log("hello");
   const diameter = circleSketch.radius * 2;
+  const j = circleSketch.jiggliness;
   const canvasWidth = () => {
     if (window.innerWidth > 200) {
       return window.innerWidth;
     } else return 200;
   };
-  //h of component = h of window - header - settings - footer
-  const componentHeight = window.innerHeight - 3 * 156;
-  const canvasHeight = () => {
-    if (componentHeight > 200) {
-      return componentHeight;
-    } else return 200;
+
+  const bannerHeight = () => {
+    if (window.innerWidth > 768) {
+      return 66;
+    }
+    return 35;
   };
 
+  const canvasHeight = () => {
+    if (window.innerHeight > 200) {
+      return window.innerHeight - bannerHeight();
+    } else return 200;
+  };
   const sketch = (s: P5CanvasInstance) => {
     let x: number;
     let y: number;
@@ -46,15 +53,17 @@ const Sketch: React.FC<SketchProps> = ({
         s.ellipse(x, y, diameter, diameter);
         s.fill(circleSketch.colour);
         // jiggling
-        x = x + s.random(-jiggliness, jiggliness);
-        y = y + s.random(-jiggliness, jiggliness);
+        x = x + s.random(-j, j);
+        y = y + s.random(-j, j);
         // lose condition
         if (y < 0) {
           setGameResult("lost");
+          // setGameLive(false);
         }
         // win condition
         if (y >= s.height) {
           setGameResult("won");
+          // setGameLive(false);
         }
         // in case it jiggles off screen x-axis:
         if (x < 0) {
@@ -68,7 +77,6 @@ const Sketch: React.FC<SketchProps> = ({
     s.mousePressed = () => {
       let d = s.dist(s.mouseX, s.mouseY, x, y);
       if (d < diameter) {
-        console.log("pressed");
         y = y + 100;
       }
     };
