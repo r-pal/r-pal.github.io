@@ -16,15 +16,15 @@ type CircleSettingsProps = {
 };
 
 const CircleSettings: React.FC<CircleSettingsProps> = ({ setCircleSketch }) => {
-  const [selectedColour, setSelectedColour] = useState("");
+  const [selectedColourHex, setSelectedColourHex] = useState("#EDFFD9");
   const { register, handleSubmit, control } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     setCircleSketch(data);
   };
+  console.log(selectedColourHex);
 
   return (
     <div>
-      {/* <div className="bg-[#DB9D47] grid content-center"> */}
       <form id="settings" onSubmit={handleSubmit(onSubmit)}>
         <div className="w-full bg-[#DB9D47] flex flex-col items-left gap-3">
           <div>
@@ -58,10 +58,11 @@ const CircleSettings: React.FC<CircleSettingsProps> = ({ setCircleSketch }) => {
             <select
               {...register("colour")}
               className={clsx(
-                "selectedColour && bg-[${selectedColour}]",
-                "selectedColour.id === 1 && text-bg-[#EDFFD9]"
+                `selectedColourHex && bg-[${selectedColourHex}]`
+                // `selectedColourHex === 1 && text-bg-[#EDFFD9]`
               )}
-              onChange={(e) => setSelectedColour(e.target.value)}
+              onChange={(e) => setSelectedColourHex(e.target.value)}
+              value={selectedColourHex}
             >
               {colours.map((c) => (
                 <option
@@ -90,7 +91,6 @@ const CircleSettings: React.FC<CircleSettingsProps> = ({ setCircleSketch }) => {
         </div>
       </form>
     </div>
-    // </div>
   );
 };
 

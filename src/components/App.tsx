@@ -22,30 +22,23 @@ const App: React.FC = () => {
   return (
     <div>
       <div className="drawer">
-        <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+        <input id="settings-drawer" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content">
-          <div className="bg-[#3A3042] h-[156px] flex justify-between">
-            <h1 className="text-[#EDFFD9] text-3xl text-center ">CIRCLES</h1>
-            <div className="flex flex-col gap-4 w-full text-center pt-4">
-              {gameResult ? (
-                <button
-                  form="settings"
-                  onClick={() => setGameResult(undefined)}
-                >
-                  <Button text="Play again" />
-                </button>
-              ) : (
-                <button form="settings" type="submit">
-                  <Button text="Start game" />
-                </button>
-              )}
+          <div className="bg-[#3A3042] flex justify-between px-2 gap-2 ">
+            <h1 className="text-[#EDFFD9] text-4xl">CIRCLES</h1>
+            <div onClick={() => setGameResult(undefined)}>
+              <Button
+                form="settings"
+                type="submit"
+                text={gameResult ? "Play again" : "Start game"}
+                variant
+              />
             </div>
-            <label
-              htmlFor="my-drawer"
-              className="btn rounded-full bg-[#EDFFD9]"
-            >
-              <Faders size={32} className="text-[#3A3042]" />
-            </label>
+            <button>
+              <label htmlFor="settings-drawer">
+                <Faders size={24} className="text-[#EDFFD9]" />
+              </label>
+            </button>
           </div>
           <div className="bg-[#315964]">
             {circleSketch && gameResult === undefined && (
@@ -65,8 +58,8 @@ const App: React.FC = () => {
           <Footer />
         </div>
         <div className="drawer-side">
-          <label htmlFor="my-drawer" className="drawer-overlay"></label>
-          <ul className="menu p-4 w-80 bg-[#DB9D47]">
+          <label htmlFor="settings-drawer" className="drawer-overlay"></label>
+          <ul className="menu p-4 bg-[#DB9D47] max-w-xs">
             <CircleSettings setCircleSketch={setCircleSketch} />
           </ul>
         </div>
