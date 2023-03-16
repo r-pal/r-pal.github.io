@@ -2,11 +2,13 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { colours, Colour } from "../constants/colours";
 import clsx from "clsx";
+import { textColour } from "./utils/textColour";
 
 export type Inputs = {
   radius: number;
   instances: number;
-  colour: Colour;
+  colour1: string;
+  colour2: string;
   jiggliness: number;
 };
 
@@ -18,13 +20,8 @@ const CircleSettings: React.FC<CircleSettingsProps> = ({ setCircleSketch }) => {
   const [selectedColourHex, setSelectedColourHex] = useState("#EDFFD9");
   const { register, handleSubmit } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
+    data.colour2 = textColour(selectedColourHex);
     setCircleSketch(data);
-  };
-
-  const textColour = (selectedColourHex: string) => {
-    for (const c of colours) {
-      if (c.hex === selectedColourHex) return c.text;
-    }
   };
 
   return (
@@ -47,7 +44,7 @@ const CircleSettings: React.FC<CircleSettingsProps> = ({ setCircleSketch }) => {
           <div className="flex-col">
             <div>Colour</div>
             <select
-              {...register("colour")}
+              {...register("colour1")}
               className={clsx(
                 `selectedColourHex && bg-[${selectedColourHex}] text-[${textColour(
                   selectedColourHex
@@ -58,7 +55,7 @@ const CircleSettings: React.FC<CircleSettingsProps> = ({ setCircleSketch }) => {
             >
               {colours.map((c) => (
                 <option
-                  key={c.id}
+                  key={c.hex}
                   value={c.hex}
                   className={clsx(`bg-[${c.hex}] text-[${c.text}]`)}
                 >

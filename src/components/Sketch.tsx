@@ -49,7 +49,8 @@ const Sketch: React.FC<SketchProps> = ({
       n = 6;
       for (let i = 0; i < n; i++) {
         s.ellipse(x, y, diameter, diameter);
-        s.fill(circleSketch.colour);
+        s.fill(circleSketch.colour1);
+        s.stroke(circleSketch.colour2);
         // jiggling
         x = x + s.random(-j, j);
         y = y + s.random(-j, j);
