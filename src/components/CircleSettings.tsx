@@ -1,7 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Colour } from "./Types";
 import { useState } from "react";
-import { colours } from "../constants/colours";
+import { colours, Colour } from "../constants/colours";
 import clsx from "clsx";
 
 export type Inputs = {
@@ -22,6 +21,12 @@ const CircleSettings: React.FC<CircleSettingsProps> = ({ setCircleSketch }) => {
     setCircleSketch(data);
   };
 
+  const textColour = (selectedColourHex: string) => {
+    for (const c of colours) {
+      if (c.hex === selectedColourHex) return c.text;
+    }
+  };
+
   return (
     <div>
       <form id="settings" onSubmit={handleSubmit(onSubmit)}>
@@ -39,26 +44,14 @@ const CircleSettings: React.FC<CircleSettingsProps> = ({ setCircleSketch }) => {
               {...register("radius")}
             />
           </div>
-          <div>
-            Number
-            <input
-              type="range"
-              step="1"
-              min="1"
-              max="100"
-              className="range range-md"
-              id="instances"
-              defaultValue={1}
-              {...register("instances")}
-            />
-          </div>
           <div className="flex-col">
             <div>Colour</div>
             <select
               {...register("colour")}
               className={clsx(
-                `selectedColourHex && bg-[${selectedColourHex}]`
-                // `selectedColourHex === 1 && text-bg-[#EDFFD9]`
+                `selectedColourHex && bg-[${selectedColourHex}] text-[${textColour(
+                  selectedColourHex
+                )}]`
               )}
               onChange={(e) => setSelectedColourHex(e.target.value)}
               value={selectedColourHex}
@@ -67,7 +60,7 @@ const CircleSettings: React.FC<CircleSettingsProps> = ({ setCircleSketch }) => {
                 <option
                   key={c.id}
                   value={c.hex}
-                  className={clsx(`bg-[${c.hex}]`)}
+                  className={clsx(`bg-[${c.hex}] text-[${c.text}]`)}
                 >
                   {c.name}
                 </option>

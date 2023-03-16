@@ -12,7 +12,6 @@ const Sketch: React.FC<SketchProps> = ({
   setGameResult,
   setGameLive,
 }) => {
-  console.log("hello");
   const diameter = circleSketch.radius * 2;
   const j = circleSketch.jiggliness;
   const canvasWidth = () => {
@@ -31,7 +30,6 @@ const Sketch: React.FC<SketchProps> = ({
   const canvasHeight = () => {
     if (window.innerHeight > 200) {
       return window.innerHeight - bannerHeight();
-      // bannerHeight();
     } else return 200;
   };
   const sketch = (s: P5CanvasInstance) => {
@@ -48,7 +46,6 @@ const Sketch: React.FC<SketchProps> = ({
 
     s.draw = () => {
       s.background(50, 89, 100);
-      console.log(s.height);
       n = 6;
       for (let i = 0; i < n; i++) {
         s.ellipse(x, y, diameter, diameter);

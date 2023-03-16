@@ -12,8 +12,11 @@ const App: React.FC = () => {
   const [circleSketch, setCircleSketch] = useState<Inputs>();
 
   const startGame = () => {
-    setGameResult(undefined);
-    setGameLive(true);
+    if (gameLive === false) {
+      setGameResult(undefined);
+      setGameLive(true);
+    }
+    return;
   };
 
   useEffect(() => {
@@ -24,16 +27,7 @@ const App: React.FC = () => {
       //enter winner board
     }
   }, [gameResult]);
-
-  const buttonText = () => {
-    if (gameResult) {
-      return "Play again";
-    }
-    if (gameLive) {
-      return "Repeatedly click that circle!";
-    }
-    return "Start game";
-  };
+  console.log(gameLive);
 
   return (
     <div>
@@ -48,9 +42,8 @@ const App: React.FC = () => {
               <Button
                 form="settings"
                 type="submit"
-                text={buttonText()}
+                text={gameLive ? "" : gameResult ? "Play again" : "Start game"}
                 variant
-                disabled={gameLive}
               />
             </div>
             <button>
@@ -67,7 +60,7 @@ const App: React.FC = () => {
                 setGameLive={setGameLive}
               />
             )}
-            <h1 className="text-[#EDFFD9] text-5xl md:text-9xl place-content-center grid">
+            <h1 className="text-[#EDFFD9] text-5xl md:text-9xl place-content-center grid h-screen">
               {gameResult === "won" && "WINNER"}
               {gameResult === "lost" && "YOU LOSE"}
             </h1>
