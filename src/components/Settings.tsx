@@ -1,27 +1,26 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
-import { colours, Colour } from "../constants/colours";
+import { colours } from "../constants/colours";
 import clsx from "clsx";
-import { textColour } from "./utils/textColour";
+import { textColour } from "../utils/textColour";
 
-export type Inputs = {
+export type Settings = {
   radius: number;
-  instances: number;
   colour1: string;
   colour2: string;
   jiggliness: number;
 };
 
 type CircleSettingsProps = {
-  setCircleSketch: (value: Inputs) => void;
+  setSettings: (value: Settings) => void;
 };
 
-const CircleSettings: React.FC<CircleSettingsProps> = ({ setCircleSketch }) => {
+const CircleSettings: React.FC<CircleSettingsProps> = ({ setSettings }) => {
   const [selectedColourHex, setSelectedColourHex] = useState("#EDFFD9");
-  const { register, handleSubmit } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const { register, handleSubmit } = useForm<Settings>();
+  const onSubmit: SubmitHandler<Settings> = (data) => {
     data.colour2 = textColour(selectedColourHex);
-    setCircleSketch(data);
+    setSettings(data);
   };
 
   return (

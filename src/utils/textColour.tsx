@@ -1,4 +1,4 @@
-import { colours } from "../../constants/colours";
+import { colours } from "../constants/colours";
 
 export const textColour = (selectedColourHex: string) => {
   for (const c of colours) {

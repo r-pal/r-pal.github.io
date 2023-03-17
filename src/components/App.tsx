@@ -1,15 +1,15 @@
 import { Faders } from "phosphor-react";
 import { useState, useEffect } from "react";
 import Button from "./Button";
-import CircleSettings, { Inputs } from "./CircleSettings";
+import CircleSettings, { Settings } from "./Settings";
 import Footer from "./Footer";
-import Sketch from "./Sketch";
+import Game from "./Game";
 
 const App: React.FC = () => {
   const [gameResult, setGameResult] = useState<"won" | "lost">();
   const [gameLive, setGameLive] = useState(false);
-  const [wins, setWins] = useState(0);
-  const [circleSketch, setCircleSketch] = useState<Inputs>();
+  const [settings, setSettings] = useState<Settings>();
+  const [level, setLevel] = useState(1);
 
   const startGame = () => {
     if (gameLive === false) {
@@ -21,13 +21,9 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (gameResult === "won") {
-      setWins(wins + 1);
-    }
-    if (wins === 3) {
-      //enter winner board
+      setLevel(level + 1);
     }
   }, [gameResult]);
-  console.log(gameLive);
 
   return (
     <div>
@@ -42,7 +38,13 @@ const App: React.FC = () => {
               <Button
                 form="settings"
                 type="submit"
-                text={gameLive ? "" : gameResult ? "Play again" : "Start game"}
+                text={
+                  gameLive
+                    ? "Restart level"
+                    : gameResult
+                    ? `level ${level}`
+                    : "Start game"
+                }
                 variant
               />
             </div>
@@ -53,14 +55,15 @@ const App: React.FC = () => {
             </button>
           </div>
           <div className="bg-[#315964]">
-            {circleSketch && gameResult === undefined && (
-              <Sketch
-                circleSketch={circleSketch}
+            {settings && gameResult === undefined && (
+              <Game
+                settings={settings}
                 setGameResult={setGameResult}
                 setGameLive={setGameLive}
+                level={level}
               />
             )}
-            <h1 className="text-[#EDFFD9] text-5xl md:text-9xl place-content-center grid h-screen">
+            <h1 className="text-[#EDFFD9] text-5xl md:text-9xl place-content-center grid">
               {gameResult === "won" && "WINNER"}
               {gameResult === "lost" && "YOU LOSE"}
             </h1>
@@ -70,7 +73,7 @@ const App: React.FC = () => {
         <div className="drawer-side">
           <label htmlFor="settings-drawer" className="drawer-overlay"></label>
           <ul className="menu p-4 bg-[#EDFFD9]/50 w-48 pt-10 xl:pt-20">
-            <CircleSettings setCircleSketch={setCircleSketch} />
+            <CircleSettings setSettings={setSettings} />
           </ul>
         </div>
       </div>
