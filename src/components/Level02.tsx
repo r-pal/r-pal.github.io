@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { P5CanvasInstance, ReactP5Wrapper } from "react-p5-wrapper";
 import { canvasHeight, canvasWidth } from "../constants/canvas";
 import { Settings } from "./Settings";
@@ -7,20 +7,24 @@ type Level02Props = {
   settings: Settings;
   setGameResult: (value: "won" | "lost" | undefined) => void;
   setGameLive: (value: boolean) => void;
+  setMessage: (value: string) => void;
 };
 
 const Level02: React.FC<Level02Props> = ({
   settings,
   setGameResult,
   setGameLive,
+  setMessage,
 }) => {
-  const r = settings.radius;
   const d = settings.radius * 2;
   const j = settings.jiggliness;
   const [fill, setFill] = useState(settings.colour2);
   const [stroke, setStroke] = useState(settings.colour1);
-  const [yGatesEntered, setYGatesEntered] = useState(false);
-  const [xGatesEntered, setXGatesEntered] = useState(false);
+  const [allYGatesEntered, setAllYGatesEntered] = useState(false);
+  const [allXGatesEntered, setAllXGatesEntered] = useState(false);
+  useEffect(() => {
+    setMessage("More screensaver than game");
+  }, []);
 
   const sketch = (s: P5CanvasInstance) => {
     let x: number;
@@ -42,10 +46,15 @@ const Level02: React.FC<Level02Props> = ({
 
     s.draw = () => {
       // without s.background() the circle produces chemtrails
-      const gateNumber = Math.ceil(s.height / d);
-      const gates = Array.from({ length: gateNumber }, (_, i) => ({
-        start: i === 0 ? 0 : i * r + 1,
-        end: (i + 1) * r,
+      const yGateNumber = Math.ceil(s.height / d);
+      const xGateNumber = Math.ceil(s.width / d);
+      const yGates = Array.from({ length: yGateNumber }, (_, i) => ({
+        start: i === 0 ? 0 : i * d + 1,
+        end: (i + 1) * d,
+      }));
+      const xGates = Array.from({ length: xGateNumber }, (_, i) => ({
+        start: i === 0 ? 0 : i * d + 1,
+        end: (i + 1) * d,
       }));
 
       for (let i = 0; i < 6; i++) {
@@ -73,16 +82,16 @@ const Level02: React.FC<Level02Props> = ({
           // if y value falls between value a and value b in an object of the gates array
           // then add to set of gatesEntered
           // when gatesEntered === gates.length, game won
-          const gate = gates.find((gate) => y >= gate.start && y <= gate.end);
-          const gateIndex = gate ? gates.indexOf(gate) : -1;
+          const gate = yGates.find((gate) => y >= gate.start && y <= gate.end);
+          const gateIndex = gate ? yGates.indexOf(gate) : -1;
           yGatesEntered.push(gateIndex);
           const uniqueGatesEntered: number[] = Array.from(
             new Set(yGatesEntered)
           );
           console.log(`Count of Ygates entered: ${uniqueGatesEntered}`);
-          if (uniqueGatesEntered.length === gates.length) {
-            setYGatesEntered(true);
-            if (xGatesEntered) {
+          if (uniqueGatesEntered.length === yGates.length) {
+            setAllYGatesEntered(true);
+            if (allXGatesEntered) {
               setGameResult("won");
               setGameLive(false);
             }
@@ -91,16 +100,16 @@ const Level02: React.FC<Level02Props> = ({
         //exit bottom (x-gates)
         if (y > s.height) {
           y = 0;
-          const gate = gates.find((gate) => x >= gate.start && x <= gate.end);
-          const gateIndex = gate ? gates.indexOf(gate) : -1;
+          const gate = xGates.find((gate) => x >= gate.start && x <= gate.end);
+          const gateIndex = gate ? xGates.indexOf(gate) : -1;
           xGatesEntered.push(gateIndex);
           const uniqueGatesEntered: number[] = Array.from(
             new Set(xGatesEntered)
           );
           console.log(`Count of Xgates entered: ${uniqueGatesEntered}`);
-          if (uniqueGatesEntered.length === gates.length) {
-            setXGatesEntered(true);
-            if (xGatesEntered) {
+          if (uniqueGatesEntered.length === xGates.length) {
+            setAllXGatesEntered(true);
+            if (allYGatesEntered) {
               setGameResult("won");
               setGameLive(false);
             }

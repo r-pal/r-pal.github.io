@@ -10,6 +10,7 @@ const App: React.FC = () => {
   const [gameLive, setGameLive] = useState(false);
   const [settings, setSettings] = useState<Settings>();
   const [level, setLevel] = useState(1);
+  const [message, setMessage] = useState("");
 
   const startGame = () => {
     if (gameLive === false) {
@@ -42,12 +43,13 @@ const App: React.FC = () => {
                   gameLive
                     ? "Restart level"
                     : gameResult
-                    ? `level ${level}`
+                    ? `Level ${level}`
                     : "Start game"
                 }
                 variant
               />
             </div>
+            <div className="text-[#EDFFD9] self-center">{message}</div>
             <button>
               <label htmlFor="settings-drawer">
                 <Faders size={24} className="text-[#EDFFD9]" />
@@ -61,6 +63,7 @@ const App: React.FC = () => {
                 setGameResult={setGameResult}
                 setGameLive={setGameLive}
                 level={level}
+                setMessage={setMessage}
               />
             )}
             <h1 className="text-[#EDFFD9] text-5xl md:text-9xl place-content-center grid">

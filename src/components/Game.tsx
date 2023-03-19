@@ -7,6 +7,7 @@ type GameProps = {
   setGameResult: (value: "won" | "lost" | undefined) => void;
   setGameLive: (value: boolean) => void;
   level: number;
+  setMessage: (value: string) => void;
 };
 
 const Game: React.FC<GameProps> = ({
@@ -14,26 +15,24 @@ const Game: React.FC<GameProps> = ({
   setGameResult,
   setGameLive,
   level,
+  setMessage,
 }) => {
   const levels = [
     <Level01
       settings={settings}
       setGameResult={setGameResult}
       setGameLive={setGameLive}
+      setMessage={setMessage}
     />,
     <Level02
       settings={settings}
       setGameResult={setGameResult}
       setGameLive={setGameLive}
+      setMessage={setMessage}
     />,
   ];
 
-  return (
-    <>
-      {/* {levels[level - 1]} */}
-      {levels[1]}
-    </>
-  );
+  return <>{levels[level - 1]}</>;
 };
 
 export default Game;

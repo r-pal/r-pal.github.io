@@ -6,12 +6,14 @@ type Level01Props = {
   settings: Settings;
   setGameResult: (value: "won" | "lost" | undefined) => void;
   setGameLive: (value: boolean) => void;
+  setMessage: (value: string) => void;
 };
 
 const Level01: React.FC<Level01Props> = ({
   settings,
   setGameResult,
   setGameLive,
+  setMessage,
 }) => {
   const diameter = settings.radius * 2;
   const j = settings.jiggliness;
@@ -19,7 +21,7 @@ const Level01: React.FC<Level01Props> = ({
   const sketch = (s: P5CanvasInstance) => {
     let x: number;
     let y: number;
-
+    setMessage("The circle wants clicks");
     s.setup = () => {
       s.createCanvas(canvasWidth, canvasHeight);
       x = s.random(0, s.width);
@@ -39,11 +41,13 @@ const Level01: React.FC<Level01Props> = ({
         if (y < 0) {
           setGameResult("lost");
           setGameLive(false);
+          setMessage("");
         }
         // win condition
         if (y >= s.height) {
           setGameResult("won");
           setGameLive(false);
+          setMessage("");
         }
         // in case it jiggles off screen x-axis:
         if (x < 0) {
