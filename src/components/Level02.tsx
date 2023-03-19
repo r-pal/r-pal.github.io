@@ -17,13 +17,16 @@ const Level02: React.FC<Level02Props> = ({
   const r = settings.radius;
   const d = settings.radius * 2;
   const j = settings.jiggliness;
-  const [fill, setFill] = useState(settings.colour1);
-  const [stroke, setStroke] = useState(settings.colour2);
+  const [fill, setFill] = useState(settings.colour2);
+  const [stroke, setStroke] = useState(settings.colour1);
+  const [yGatesEntered, setYGatesEntered] = useState(false);
+  const [xGatesEntered, setXGatesEntered] = useState(false);
 
   const sketch = (s: P5CanvasInstance) => {
     let x: number;
     let y: number;
-    const gatesEntered: number[] = [];
+    const xGatesEntered: number[] = [];
+    const yGatesEntered: number[] = [];
     let colour1 = settings.colour1;
     let colour2 = settings.colour2;
 
@@ -39,7 +42,7 @@ const Level02: React.FC<Level02Props> = ({
 
     s.draw = () => {
       // without s.background() the circle produces chemtrails
-      const gateNumber = Math.ceil(s.height / r);
+      const gateNumber = Math.ceil(s.height / d);
       const gates = Array.from({ length: gateNumber }, (_, i) => ({
         start: i === 0 ? 0 : i * r + 1,
         end: (i + 1) * r,
@@ -62,7 +65,7 @@ const Level02: React.FC<Level02Props> = ({
         if (y <= 0) {
           y = s.height;
         }
-        // exit left
+        // exit left (y-gates)
         if (x <= 0) {
           x = s.width;
           // make array of object gates where an object == (start, end) and where the length === gateNumber
@@ -72,22 +75,36 @@ const Level02: React.FC<Level02Props> = ({
           // when gatesEntered === gates.length, game won
           const gate = gates.find((gate) => y >= gate.start && y <= gate.end);
           const gateIndex = gate ? gates.indexOf(gate) : -1;
-          gatesEntered.push(gateIndex);
-          console.log(`Value ${y} is in gate ${gateIndex}`);
-          console.log(`Number of gates entered: ${gatesEntered.length}`);
+          yGatesEntered.push(gateIndex);
           const uniqueGatesEntered: number[] = Array.from(
-            new Set(gatesEntered)
+            new Set(yGatesEntered)
           );
-          console.log(`List of unique gates entered: ${uniqueGatesEntered}`);
+          console.log(`Count of Ygates entered: ${uniqueGatesEntered}`);
           if (uniqueGatesEntered.length === gates.length) {
-            setGameResult("won");
-            setGameLive(false);
+            setYGatesEntered(true);
+            if (xGatesEntered) {
+              setGameResult("won");
+              setGameLive(false);
+            }
           }
         }
-        //exit bottom
+        //exit bottom (x-gates)
         if (y > s.height) {
           y = 0;
-          // bottomCrossed = bottomCrossed + x;
+          const gate = gates.find((gate) => x >= gate.start && x <= gate.end);
+          const gateIndex = gate ? gates.indexOf(gate) : -1;
+          xGatesEntered.push(gateIndex);
+          const uniqueGatesEntered: number[] = Array.from(
+            new Set(xGatesEntered)
+          );
+          console.log(`Count of Xgates entered: ${uniqueGatesEntered}`);
+          if (uniqueGatesEntered.length === gates.length) {
+            setXGatesEntered(true);
+            if (xGatesEntered) {
+              setGameResult("won");
+              setGameLive(false);
+            }
+          }
         }
         // movement across canvas
         y = y + 1;
