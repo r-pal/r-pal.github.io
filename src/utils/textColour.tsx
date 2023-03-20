@@ -1,8 +1,8 @@
 import { colours } from "../constants/colours";
 
-export const textColour = (selectedColourHex: string) => {
+export const secondaryColour = (selectedColourHex: string) => {
   for (const c of colours) {
-    if (c.hex === selectedColourHex) return c.text;
+    if (c.primary === selectedColourHex) return c.secondary;
   }
   return "";
 };

@@ -23,7 +23,7 @@ const Level02: React.FC<Level02Props> = ({
   const [allYGatesEntered, setAllYGatesEntered] = useState(false);
   const [allXGatesEntered, setAllXGatesEntered] = useState(false);
   useEffect(() => {
-    setMessage("More screensaver than game");
+    setMessage("Meteor multiplication");
   }, []);
 
   const sketch = (s: P5CanvasInstance) => {

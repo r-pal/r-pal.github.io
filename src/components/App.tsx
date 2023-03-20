@@ -1,9 +1,7 @@
-import { Faders } from "phosphor-react";
 import { useState, useEffect } from "react";
-import Button from "./Button";
 import CircleSettings, { Settings } from "./Settings";
-import Footer from "./Footer";
 import Game from "./Game";
+import Header from "./Header";
 
 const App: React.FC = () => {
   const [gameResult, setGameResult] = useState<"won" | "lost">();
@@ -31,31 +29,13 @@ const App: React.FC = () => {
       <div className="drawer">
         <input id="settings-drawer" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content">
-          <div className="bg-[#3A3042] flex justify-between px-2">
-            <h1 className="text-[#EDFFD9] h-[35px] text-4xl xl:text-7xl xl:h-[66px]">
-              CIRCLES
-            </h1>
-            <div onClick={() => startGame()} className="self-center">
-              <Button
-                form="settings"
-                type="submit"
-                text={
-                  gameLive
-                    ? "Restart level"
-                    : gameResult
-                    ? `Level ${level}`
-                    : "Start game"
-                }
-                variant
-              />
-            </div>
-            <div className="text-[#EDFFD9] self-center">{message}</div>
-            <button>
-              <label htmlFor="settings-drawer">
-                <Faders size={24} className="text-[#EDFFD9]" />
-              </label>
-            </button>
-          </div>
+          <Header
+            gameLive={gameLive}
+            gameResult={gameResult}
+            level={level}
+            message={message}
+            startGame={startGame}
+          />
           <div className="bg-[#315964]">
             {settings && gameResult === undefined && (
               <Game
@@ -71,7 +51,6 @@ const App: React.FC = () => {
               {gameResult === "lost" && "YOU LOSE"}
             </h1>
           </div>
-          <Footer />
         </div>
         <div className="drawer-side">
           <label htmlFor="settings-drawer" className="drawer-overlay"></label>

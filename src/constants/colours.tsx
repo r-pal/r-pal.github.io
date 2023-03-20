@@ -1,12 +1,12 @@
 export type Colour = {
-  hex: string;
-  text: string;
-  name: string;
+  primary: string;
+  secondary: string;
+  label: string;
 };
 
 export const colours = [
-  { hex: "#3A3042", text: "#EDFFD9", name: "Dark purple" },
-  { hex: "#DB9D47", text: "#3A3042", name: "Tangerine" },
-  { hex: "#EDFFD9", text: "#3A3042", name: "Nyanza" },
-  { hex: "#315964", text: "#EDFFD9", name: "Deep Sea" },
+  { primary: "#3A3042", secondary: "#EDFFD9", label: "Purple" },
+  // { primary: "#DB9D47", secondary: "#3A3042", label: "Tangerine" },
+  { primary: "#EDFFD9", secondary: "#3A3042", label: "Nyanza" },
+  { primary: "#315964", secondary: "#EDFFD9", label: "Sea" },
 ];
