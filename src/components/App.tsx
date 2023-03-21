@@ -8,7 +8,7 @@ const App: React.FC = () => {
   const [gameLive, setGameLive] = useState(false);
   const [settings, setSettings] = useState<Settings>();
   const [level, setLevel] = useState(1);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState("Welcome to Circles!");
 
   const startGame = () => {
     if (gameLive === false) {

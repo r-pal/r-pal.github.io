@@ -26,13 +26,10 @@ const Header: React.FC<HeaderProps> = ({
           form="settings"
           type="submit"
           text={
-            gameLive
-              ? "Restart level"
-              : gameResult
-              ? `Level ${level}`
-              : "Start game"
+            gameLive ? "Restart level" : gameResult ? `Level ${level}` : "START"
           }
           // variant
+          header
         />
       </div>
       <div className="text-[#EDFFD9] self-center">{message}</div>
