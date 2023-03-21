@@ -26,7 +26,7 @@ const Button: React.FC<ButtonProps> = ({
     type={type}
     disabled={disabled}
   >
-    {header ? <h1 className="text-[#3A3042]  xl:text-7xl">{text}</h1> : text}
+    {header ? <h1 className="text-[#3A3042]  xl:text-4xl">{text}</h1> : text}
   </button>
 );
 

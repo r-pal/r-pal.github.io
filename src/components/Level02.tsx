@@ -23,8 +23,19 @@ const Level02: React.FC<Level02Props> = ({
   const [allYGatesEntered, setAllYGatesEntered] = useState(false);
   const [allXGatesEntered, setAllXGatesEntered] = useState(false);
   useEffect(() => {
-    setMessage("Meteor multiplication");
+    setMessage("Meteor multiplicaiton. Complete coverage please");
   }, []);
+  useEffect(() => {
+    if (allXGatesEntered === true && allXGatesEntered === true) {
+      setMessage("All covered");
+    }
+    if (allYGatesEntered === true) {
+      setMessage("All of the left side - covered");
+    }
+    if (allXGatesEntered === true) {
+      setMessage("All of the bottom - covered");
+    }
+  }, [allYGatesEntered, allXGatesEntered]);
 
   const sketch = (s: P5CanvasInstance) => {
     let x: number;
