@@ -7,11 +7,11 @@ module.exports = {
       header: ["Tilt Prism"]
     },
     colors: {
-      "Dark purple": "#3A3042",
-      "Earth yellow": "#DB9D47",
-      "Coral": "#FF784F",
-      "Peach Yellow": "#FFE19C",
-      "Nyanza": "#EDFFD9",
+      "purple": "#3A3042",
+      "tangerine": "#DB9D47",
+      "coral": "#FF784F",
+      "sea": "#315964",
+      "nyanza": "#EDFFD9",
       'white': '#ffffff',
       transparent: 'transparent',
     },

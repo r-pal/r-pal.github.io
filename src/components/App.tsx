@@ -1,15 +1,14 @@
-import { Faders } from "phosphor-react";
 import { useState, useEffect } from "react";
-import Button from "./Button";
-import CircleSettings, { Inputs } from "./CircleSettings";
-import Footer from "./Footer";
-import Sketch from "./Sketch";
+import CircleSettings, { Settings } from "./Settings";
+import Game from "./Game";
+import Header from "./Header";
 
 const App: React.FC = () => {
   const [gameResult, setGameResult] = useState<"won" | "lost">();
   const [gameLive, setGameLive] = useState(false);
-  const [wins, setWins] = useState(0);
-  const [circleSketch, setCircleSketch] = useState<Inputs>();
+  const [settings, setSettings] = useState<Settings>();
+  const [level, setLevel] = useState(1);
+  const [message, setMessage] = useState("Welcome to Circles!");
 
   const startGame = () => {
     if (gameLive === false) {
@@ -21,24 +20,44 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (gameResult === "won") {
-      setWins(wins + 1);
-    }
-    if (wins === 3) {
-      //enter winner board
+      setLevel(level + 1);
     }
   }, [gameResult]);
-  console.log(gameLive);
 
   return (
-    <>
-      <Header />
-      <div className="bg-[#3A3042] h-max">
-        <Table />
-       <MousePosition
-          mousePos={mousePos}
-          circleStart={circleStart}
-          circleEnd={circleEnd}
-        />
+    <div>
+      <div className="drawer">
+        <input id="settings-drawer" type="checkbox" className="drawer-toggle" />
+        <div className="drawer-content">
+          <Header
+            gameLive={gameLive}
+            gameResult={gameResult}
+            level={level}
+            message={message}
+            startGame={startGame}
+          />
+          <div className="bg-[#315964]">
+            {settings && gameResult === undefined && (
+              <Game
+                settings={settings}
+                setGameResult={setGameResult}
+                setGameLive={setGameLive}
+                level={level}
+                setMessage={setMessage}
+              />
+            )}
+            <h1 className="text-[#EDFFD9] text-5xl md:text-9xl place-content-center grid">
+              {gameResult === "won" && "WINNER"}
+              {gameResult === "lost" && "YOU LOSE"}
+            </h1>
+          </div>
+        </div>
+        <div className="drawer-side">
+          <label htmlFor="settings-drawer" className="drawer-overlay"></label>
+          <ul className="menu p-4 bg-[#EDFFD9]/50 w-48 pt-10 xl:pt-20">
+            <CircleSettings setSettings={setSettings} />
+          </ul>
+        </div>
       </div>
     </div>
   );

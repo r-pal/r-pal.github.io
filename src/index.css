@@ -2,6 +2,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Tilt+Prism&display=swap');
 
 @tailwind base;
+
+::selection {
+    background: #FF784F;
+  }
 @tailwind components;
 @tailwind utilities;
 
@@ -9,3 +13,4 @@
     h1 { @apply font-header;
     } 
 }
+
