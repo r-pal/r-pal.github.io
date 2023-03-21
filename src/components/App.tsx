@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import CircleSettings, { Settings } from "./Settings";
+import CircleSettings, { Settings } from "./CircleSettings";
 import Game from "./Game";
 import Header from "./Header";
 

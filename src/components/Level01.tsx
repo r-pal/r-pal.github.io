@@ -1,6 +1,6 @@
 import { P5CanvasInstance, ReactP5Wrapper } from "react-p5-wrapper";
 import { canvasWidth, canvasHeight } from "../constants/canvas";
-import { Settings } from "./Settings";
+import { Settings } from "./CircleSettings";
 
 type Level01Props = {
   settings: Settings;

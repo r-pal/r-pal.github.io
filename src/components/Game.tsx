@@ -1,4 +1,4 @@
-import { Settings } from "./Settings";
+import { Settings } from "./CircleSettings";
 import Level01 from "./Level01";
 import Level02 from "./Level02";
 

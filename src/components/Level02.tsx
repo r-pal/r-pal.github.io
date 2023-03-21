@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { P5CanvasInstance, ReactP5Wrapper } from "react-p5-wrapper";
 import { canvasHeight, canvasWidth } from "../constants/canvas";
-import { Settings } from "./Settings";
+import { Settings } from "./CircleSettings";
 
 type Level02Props = {
   settings: Settings;
