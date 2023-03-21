@@ -1,110 +1,85 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Colour } from "./Types";
-import { Fragment, useState } from "react";
-import { Listbox, Transition } from "@headlessui/react";
-import { colours } from "../constants/colours";
-import { CaretDown, Check } from "phosphor-react";
-import Button from "./Button";
+import { useState } from "react";
+import { colours, Colour } from "../constants/colours";
+import clsx from "clsx";
+import { textColour } from "./utils/textColour";
 
-type CircleSettingsProps = {};
-
-type Inputs = {
+export type Inputs = {
   radius: number;
-  colour: Colour;
+  instances: number;
+  colour1: string;
+  colour2: string;
+  jiggliness: number;
 };
 
-const CircleSettings: React.FC<CircleSettingsProps> = ({}) => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+type CircleSettingsProps = {
+  setCircleSketch: (value: Inputs) => void;
+};
 
-  const [selectedColour, setSelectedColour] = useState(colours[0]);
+const CircleSettings: React.FC<CircleSettingsProps> = ({ setCircleSketch }) => {
+  const [selectedColourHex, setSelectedColourHex] = useState("#EDFFD9");
+  const { register, handleSubmit } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    data.colour2 = textColour(selectedColourHex);
+    setCircleSketch(data);
+  };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="w-1/2 bg-[#DB9D47]">
-        <>
-          <div className="sm:grid sm:grid-cols-2 sm:gap-8">
-            Radius
+    <div>
+      <form id="settings" onSubmit={handleSubmit(onSubmit)}>
+        <div className="w-full flex flex-col items-left gap-3">
+          <div>
+            Size
             <input
-              required
-              id="radius"
-              placeholder="Enter radius in cm"
+              type="range"
+              step="50"
+              min="10"
+              max="1010"
+              className="range range-md border-[#EDFFD9]"
+              id="size"
+              defaultValue={50}
               {...register("radius")}
             />
-            Colour
-            <div className="w-full">
-              <Listbox value={selectedColour} onChange={setSelectedColour}>
-                <div className="relative mt-1">
-                  <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-                    <span className="block truncate">
-                      {selectedColour.name}
-                    </span>
-                    <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                      <CaretDown
-                        className="h-5 w-5 text-gray-400"
-                        aria-hidden="true"
-                      />
-                    </span>
-                  </Listbox.Button>
-                  <Transition
-                    as={Fragment}
-                    leave="transition ease-in duration-100"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                  >
-                    <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                      {colours.map((c) => (
-                        <Listbox.Option
-                          key={c.id}
-                          className={({ active }) =>
-                            `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                              active
-                                ? `bg-[${c.hex}] 'text-amber-900`
-                                : "text-gray-900"
-                            }`
-                          }
-                          value={c}
-                        >
-                          {({ selected }) => (
-                            <>
-                              <span
-                                className={`block truncate ${
-                                  selected ? "font-medium" : "font-normal"
-                                }`}
-                              >
-                                {c.name}
-                              </span>
-                              {selected ? (
-                                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                                  <Check
-                                    className="h-5 w-5"
-                                    aria-hidden="true"
-                                  />
-                                </span>
-                              ) : null}
-                            </>
-                          )}
-                        </Listbox.Option>
-                      ))}
-                    </Listbox.Options>
-                  </Transition>
-                </div>
-              </Listbox>
-            </div>
           </div>
-        </>
-      <div className="flex flex-col gap-4 w-full text-center pt-4">
-        <button type="submit">
-          <Button text="Save Circle"/>
-        </button>
-      </div>
-      </div>
-    </form>
+          <div className="flex-col">
+            <div>Colour</div>
+            <select
+              {...register("colour1")}
+              className={clsx(
+                `selectedColourHex && bg-[${selectedColourHex}] text-[${textColour(
+                  selectedColourHex
+                )}]`
+              )}
+              onChange={(e) => setSelectedColourHex(e.target.value)}
+              value={selectedColourHex}
+            >
+              {colours.map((c) => (
+                <option
+                  key={c.hex}
+                  value={c.hex}
+                  className={clsx(`bg-[${c.hex}] text-[${c.text}]`)}
+                >
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            Jiggly Factor
+            <input
+              type="range"
+              step="1"
+              min="1"
+              max="10"
+              defaultValue={1}
+              className="range range-md"
+              id="jiggliness"
+              {...register("jiggliness")}
+            />
+          </div>
+        </div>
+      </form>
+    </div>
   );
 };
 

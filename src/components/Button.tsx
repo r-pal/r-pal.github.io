@@ -1,20 +1,33 @@
 import clsx from "clsx";
+import { Faders } from "phosphor-react";
 
 type ButtonProps = {
-  text: string;
+  text?: string;
+  type: "button" | "submit" | "reset";
   variant?: boolean;
+  form?: string;
+  disabled?: boolean;
 };
 
-const Button: React.FC<ButtonProps> = ({ text, variant }) => {
+const Button: React.FC<ButtonProps> = ({
+  text,
+  variant,
+  form,
+  type,
+  disabled,
+}) => {
   return (
-    <div
-      className="group relative inline-block text-sm font-medium focus:outline-none focus:ring text-[#3A3042]"
+    <button
+      className={clsx(
+        "text-sm focus:ring-cyan-500 text-[#3A3042] hover:bg-[#EDFFD9]/50 p-1 rounded-full",
+        variant ? "text-[#EDFFD9]" : " bg-[#EDFFD9]"
+      )}
+      form={form}
+      type={type}
+      disabled={disabled}
     >
-      <span className={clsx( "block px-12 py-3 rounded-full transition-transform group-hover:-translate-x-1 group-hover:-translate-y-1", 
-      variant ? "border border-[#3A3042]" : "bg-[#EDFFD9]"  )}>
-        {text}
-      </span>
-    </div>
+      {text}
+    </button>
   );
 };
 

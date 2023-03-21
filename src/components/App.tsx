@@ -1,69 +1,46 @@
+import { Faders } from "phosphor-react";
 import { useState, useEffect } from "react";
-import Sketch from "./Sketch";
-import CircleSettings from "./CircleSettings";
+import Button from "./Button";
+import CircleSettings, { Inputs } from "./CircleSettings";
 import Footer from "./Footer";
-import Header from "./Header";
-import MousePosition from "./MousePosition";
-import Table from "./Table";
+import Sketch from "./Sketch";
 
 const App: React.FC = () => {
-  const [mousePos, setMousePos] = useState({});
-  const [circleStart, setCircleStart] = useState({});
-  const [circleEnd, setCircleEnd] = useState({});
-  const [clicked, setClicked] = useState(false);
+  const [gameResult, setGameResult] = useState<"won" | "lost">();
+  const [gameLive, setGameLive] = useState(false);
+  const [wins, setWins] = useState(0);
+  const [circleSketch, setCircleSketch] = useState<Inputs>();
 
-  // const startCircleDraw = () => {
-  //   //anchor circle start at coordintes
-  //   setCircleStart(mousePos)
-  // };
-
-  useEffect(() => {
-    const handleMouseMove = (event: any) => {
-      setMousePos({ x: event.clientX, y: event.clientY });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
+  const startGame = () => {
+    if (gameLive === false) {
+      setGameResult(undefined);
+      setGameLive(true);
+    }
+    return;
+  };
 
   useEffect(() => {
-    const handleClick = (event: any) => {
-      if (!clicked) {
-        setCircleStart(mousePos);
-      } else {
-        setCircleEnd(mousePos);
-      }
-      setClicked(!clicked);
-    };
-
-    window.addEventListener("click", handleClick);
-
-    // return () => {
-    //   window.removeEventListener(
-    //     'mousemove',
-    //     handleMouseMove
-    //   );
-    // };
-  });
+    if (gameResult === "won") {
+      setWins(wins + 1);
+    }
+    if (wins === 3) {
+      //enter winner board
+    }
+  }, [gameResult]);
+  console.log(gameLive);
 
   return (
     <>
       <Header />
       <div className="bg-[#3A3042] h-max">
-        {/* <Table /> */}
+        <Table />
        <MousePosition
           mousePos={mousePos}
           circleStart={circleStart}
           circleEnd={circleEnd}
         />
       </div>
-        <CircleSettings/>
-        <Sketch/>
-      <Footer clicked={clicked} />
-    </>
+    </div>
   );
 };
 
