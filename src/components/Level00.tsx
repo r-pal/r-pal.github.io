@@ -10,6 +10,7 @@ type Level00Props = {
 const Level00: React.FC<Level00Props> = ({
   settings,
 }) => {
+
   const diameter = settings.radius * 2;
   const j = settings.jiggliness;
 

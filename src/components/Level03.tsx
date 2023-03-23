@@ -23,7 +23,7 @@ const Level03: React.FC<Level03Props> = ({
   const [allYGatesEntered, setAllYGatesEntered] = useState(false);
   const [allXGatesEntered, setAllXGatesEntered] = useState(false);
   useEffect(() => {
-    setMessage("Meteor multiplicaiton. Complete coverage please");
+    setMessage("It's a waiting game");
   }, []);
   useEffect(() => {
     if (allXGatesEntered === true && allXGatesEntered === true) {
@@ -105,6 +105,7 @@ const Level03: React.FC<Level03Props> = ({
             if (allXGatesEntered) {
               setGameResult("won");
               setGameLive(false);
+              setMessage("")
             }
           }
         }

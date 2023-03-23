@@ -15,29 +15,36 @@ const Header: React.FC<HeaderProps> = ({
   level,
   message,
   startGame,
-}) => (
+}) => {
+
+  const text = () => 
+  {if (!gameLive && gameResult === undefined) {return "Start"};
+    if (gameResult === "lost") { return "Restart level"};
+   if (gameResult === "won"){return `Level ${level}`};}
+  
+  // : gameResult ? `Level ${level}` : "START"
+  
+  return (
     <div className="bg-[#3A3042] flex justify-between px-2">
       <h1 className="text-[#EDFFD9] h-[35px] text-4xl xl:text-7xl xl:h-[66px]">
-        CIRCLES
+        <a href="https://r-pal.github.io" >CIRCLES</a>
       </h1>
-      <div onClick={() => startGame()} className="self-center">
+      {!gameLive && <div onClick={() => startGame()} className="self-center">
         <Button
           form="settings"
           type="submit"
-          text={
-            gameLive ? "Restart level" : gameResult ? `Level ${level}` : "START"
-          }
+          text={text()}
           // variant
           header
         />
-      </div>
+      </div>}
       <div className="text-[#EDFFD9] self-center">{message}</div>
-      <button>
+      {/* <button>
         <label htmlFor="settings-drawer">
           <Faders size={24} className="text-[#EDFFD9]" />
         </label>
-      </button>
+      </button> */}
     </div>
-);
+);}
 
 export default Header;

@@ -4,12 +4,13 @@ import Game from "./Game";
 import Header from "./Header";
 import Level00 from "./Level00";
 
+
 const App: React.FC = () => {
   const [gameResult, setGameResult] = useState<"won" | "lost" | undefined>(undefined);
   const [gameLive, setGameLive] = useState(false);
   const [settings, setSettings] = useState<Settings>({ radius: 60, colour1: "#3A3042", colour2: "#EDFFD9", jiggliness: 5 });
   const [level, setLevel] = useState(1);
-  const [message, setMessage] = useState("Welcome to Circles!");
+  const [message, setMessage] = useState("");
 
 
   const startGame = () => {
@@ -28,10 +29,7 @@ const App: React.FC = () => {
   console.log("settings: ", settings)
 
   return (
-    <div>
-      <div className="drawer">
-        <input id="settings-drawer" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content">
+    <>
           <Header
             gameLive={gameLive}
             gameResult={gameResult}
@@ -44,24 +42,17 @@ const App: React.FC = () => {
               {gameResult === "won" && "WINNER"}
               {gameResult === "lost" && "YOU LOSE"}
             </h1>
-            {settings && !gameLive ? <Level00 settings={settings}/> : <Game
-                settings={settings}
-                setGameResult={setGameResult}
-                setGameLive={setGameLive}
-                level={level}
-                setMessage={setMessage}
-              />}
-
+            {settings && gameLive 
+            ? <Game
+            settings={settings}
+            setGameResult={setGameResult}
+            setGameLive={setGameLive}
+            level={level}
+            setMessage={setMessage}
+            />
+            : <Level00 settings={settings}/> }
           </div>
-        </div>
-        <div className="drawer-side">
-          <label htmlFor="settings-drawer" className="drawer-overlay"></label>
-          <ul className="menu p-4 bg-[#EDFFD9]/50 w-48 pt-10 xl:pt-20">
-            <CircleSettings setSettings={setSettings} />
-          </ul>
-        </div>
-      </div>
-    </div>
+        </>
   );
 };
 
