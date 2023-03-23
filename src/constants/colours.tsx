@@ -10,3 +10,4 @@ export const colours = [
   { primary: "#EDFFD9", secondary: "#3A3042", label: "Nyanza" },
   { primary: "#315964", secondary: "#EDFFD9", label: "Sea" },
 ];
+

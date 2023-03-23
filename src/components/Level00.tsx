@@ -2,16 +2,13 @@ import { P5CanvasInstance, ReactP5Wrapper } from "react-p5-wrapper";
 import { canvasWidth, canvasHeight } from "../constants/canvas";
 import { Settings } from "./CircleSettings";
 
-type Level01Props = {
+
+type Level00Props = {
   settings: Settings;
-  setGameResult: (value: "won" | "lost" | undefined) => void;
-  setGameLive: (value: boolean) => void;
 };
 
-const Level01: React.FC<Level01Props> = ({
+const Level00: React.FC<Level00Props> = ({
   settings,
-  setGameResult,
-  setGameLive,
 }) => {
   const diameter = settings.radius * 2;
   const j = settings.jiggliness;
@@ -21,7 +18,7 @@ const Level01: React.FC<Level01Props> = ({
     let y: number;
     s.setup = () => {
       s.createCanvas(canvasWidth, canvasHeight);
-      x = s.width / 2;
+      x = s.width;
       y = s.height / 2;
     };
 
@@ -38,6 +35,7 @@ const Level01: React.FC<Level01Props> = ({
         if (x < 0) {
           x = s.width;
         }
+        x = x - 1
       }
     };
   };
@@ -45,4 +43,4 @@ const Level01: React.FC<Level01Props> = ({
   return <ReactP5Wrapper sketch={sketch} />;
 };
 
-export default Level01;
+export default Level00;

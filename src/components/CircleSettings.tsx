@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { colours } from "../constants/colours";
 import clsx from "clsx";
 import { secondaryColour } from "../utils/textColour";
@@ -18,16 +18,19 @@ type CircleSettingsProps = {
 const CircleSettings: React.FC<CircleSettingsProps> = ({ setSettings }) => {
   const [selectedColourHex, setSelectedColourHex] = useState("#EDFFD9");
   const { register, handleSubmit } = useForm<Settings>();
+
   const onSubmit: SubmitHandler<Settings> = (data) => {
     data.colour2 = secondaryColour(selectedColourHex);
     setSettings(data);
   };
 
+  
+
   return (
     <div>
       <form id="settings" onSubmit={handleSubmit(onSubmit)}>
-        <div className="w-full flex flex-col items-left gap-3">
-          <div>
+        <div className="w-full flex flex-col items-left gap-3 text-nyanza border-nyanza accent-nyanza">
+          <div >
             Size
             <input
               type="range"
@@ -36,7 +39,7 @@ const CircleSettings: React.FC<CircleSettingsProps> = ({ setSettings }) => {
               max="1010"
               className="range range-md"
               id="size"
-              defaultValue={50}
+              defaultValue={60}
               {...register("radius")}
             />
           </div>
@@ -47,7 +50,6 @@ const CircleSettings: React.FC<CircleSettingsProps> = ({ setSettings }) => {
               className={clsx(
                 `select
                 bg-[${selectedColourHex}] 
-                text-nyanza
                  hover:bg-[${selectedColourHex}]`
               )}
               onChange={(e) => setSelectedColourHex(e.target.value)}
@@ -58,7 +60,7 @@ const CircleSettings: React.FC<CircleSettingsProps> = ({ setSettings }) => {
                   key={c.primary}
                   value={c.primary}
                   className={clsx(`bg-[${c.primary}] text-[${c.secondary}]`)}
-                />
+                >{c.label}</option>
               ))}
             </select>
           </div>
@@ -69,7 +71,7 @@ const CircleSettings: React.FC<CircleSettingsProps> = ({ setSettings }) => {
               step="1"
               min="1"
               max="10"
-              defaultValue={1}
+              defaultValue={5}
               className="range range-md"
               id="jiggliness"
               {...register("jiggliness")}
