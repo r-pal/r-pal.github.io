@@ -1,148 +1,72 @@
-import { useEffect, useState } from "react";
 import { P5CanvasInstance, ReactP5Wrapper } from "react-p5-wrapper";
-import { canvasHeight, canvasWidth } from "../constants/canvas";
+import { canvasWidth, canvasHeight } from "../constants/canvas";
 import { Settings } from "./CircleSettings";
 
-type Level02Props = {
+type Level01Props = {
   settings: Settings;
   setGameResult: (value: "won" | "lost" | undefined) => void;
   setGameLive: (value: boolean) => void;
   setMessage: (value: string) => void;
 };
 
-const Level02: React.FC<Level02Props> = ({
+const Level01: React.FC<Level01Props> = ({
   settings,
   setGameResult,
   setGameLive,
   setMessage,
 }) => {
-  const d = settings.radius * 2;
+  let diameter = settings.radius * 2;
   const j = settings.jiggliness;
-  const [fill, setFill] = useState(settings.colour2);
-  const [stroke, setStroke] = useState(settings.colour1);
-  const [allYGatesEntered, setAllYGatesEntered] = useState(false);
-  const [allXGatesEntered, setAllXGatesEntered] = useState(false);
-  useEffect(() => {
-    setMessage("Meteor multiplicaiton. Complete coverage please");
-  }, []);
-  useEffect(() => {
-    if (allXGatesEntered === true && allXGatesEntered === true) {
-      setMessage("All covered");
-    }
-    if (allYGatesEntered === true) {
-      setMessage("All of the left side - covered");
-    }
-    if (allXGatesEntered === true) {
-      setMessage("All of the bottom - covered");
-    }
-  }, [allYGatesEntered, allXGatesEntered]);
 
   const sketch = (s: P5CanvasInstance) => {
     let x: number;
     let y: number;
-    const xGatesEntered: number[] = [];
-    const yGatesEntered: number[] = [];
-    let colour1 = settings.colour1;
-    let colour2 = settings.colour2;
 
+    setMessage("The circle wants clicks");
     s.setup = () => {
       s.createCanvas(canvasWidth, canvasHeight);
-      x = Math.round(s.random(0, s.width));
-      y = Math.round(s.random(0, s.height));
-    };
-
-    s.windowResized = () => {
-      s.resizeCanvas(s.windowWidth, s.windowHeight);
+      x = s.random(0, s.width);
+      y = s.random(s.height / 2, s.height / 3);
     };
 
     s.draw = () => {
-      // without s.background() the circle produces chemtrails
-      const yGateNumber = Math.ceil(s.height / d);
-      const xGateNumber = Math.ceil(s.width / d);
-      const yGates = Array.from({ length: yGateNumber }, (_, i) => ({
-        start: i === 0 ? 0 : i * d + 1,
-        end: (i + 1) * d,
-      }));
-      const xGates = Array.from({ length: xGateNumber }, (_, i) => ({
-        start: i === 0 ? 0 : i * d + 1,
-        end: (i + 1) * d,
-      }));
-
+      s.background(50, 89, 100);
       for (let i = 0; i < 6; i++) {
-        s.ellipse(x, y, d, d);
-        s.fill(fill);
-        s.stroke(stroke);
+      x = s.random(0, s.width);
+      y = s.random(s.height / 2, s.height / 3);
+        s.ellipse(x, y, diameter, diameter);
+        s.fill(settings.colour1);
+        s.stroke(settings.colour2);
         // jiggling
-        x = x + s.random(-j, j);
-        y = y + s.random(-j, j);
-        //(0,0) is coordinates for top left corner
-        //(s.width, s.height) for bottom right
-        //enter right
-        if (x > s.width) {
-          x = 0;
+        // x = x + s.random(-j, j);
+        // y = y + s.random(-j, j);
+        // // lose condition
+        if (diameter > s.height) {
+          setGameResult("lost");
+          setGameLive(false);
+          setMessage("");
         }
-        //enter top
-        if (y <= 0) {
+        // win condition
+        if (diameter < 25) {
+          setGameResult("won");
+          setGameLive(false);
+          setMessage("");
+        }
+        // in case it jiggles off screen x-axis:
+        if (x < 0) {
+          x = s.width;
+        }
+        if (y < 0) {
           y = s.height;
         }
-        // exit left (y-gates)
-        if (x <= 0) {
-          x = s.width;
-          // make array of object gates where an object == (start, end) and where the length === gateNumber
-          // iterate through gates array
-          // if y value falls between value a and value b in an object of the gates array
-          // then add to set of gatesEntered
-          // when gatesEntered === gates.length, game won
-          const gate = yGates.find((gate) => y >= gate.start && y <= gate.end);
-          const gateIndex = gate ? yGates.indexOf(gate) : -1;
-          yGatesEntered.push(gateIndex);
-          const uniqueGatesEntered: number[] = Array.from(
-            new Set(yGatesEntered)
-          );
-          console.log(`Count of Ygates entered: ${uniqueGatesEntered}`);
-          if (uniqueGatesEntered.length === yGates.length) {
-            setAllYGatesEntered(true);
-            if (allXGatesEntered) {
-              setGameResult("won");
-              setGameLive(false);
-            }
-          }
-        }
-        //exit bottom (x-gates)
-        if (y > s.height) {
-          y = 0;
-          const gate = xGates.find((gate) => x >= gate.start && x <= gate.end);
-          const gateIndex = gate ? xGates.indexOf(gate) : -1;
-          xGatesEntered.push(gateIndex);
-          const uniqueGatesEntered: number[] = Array.from(
-            new Set(xGatesEntered)
-          );
-          console.log(`Count of Xgates entered: ${uniqueGatesEntered}`);
-          if (uniqueGatesEntered.length === xGates.length) {
-            setAllXGatesEntered(true);
-            if (allYGatesEntered) {
-              setGameResult("won");
-              setGameLive(false);
-            }
-          }
-        }
-        // movement across canvas
-        y = y + 1;
-        x = x - 1;
+        diameter = diameter + 1
       }
     };
 
     s.mousePressed = () => {
-      let distance = s.dist(s.mouseX, s.mouseY, x, y);
-      if (distance < d) {
-        if (fill === colour1) {
-          setFill(colour2);
-          setStroke(colour1);
-        }
-        if (fill === colour2) {
-          setFill(colour1);
-          setStroke(colour2);
-        }
+      let d = s.dist(s.mouseX, s.mouseY, x, y);
+      if (d < diameter) {
+        diameter = diameter - 75;
       }
     };
   };
@@ -150,4 +74,4 @@ const Level02: React.FC<Level02Props> = ({
   return <ReactP5Wrapper sketch={sketch} />;
 };
 
-export default Level02;
+export default Level01;

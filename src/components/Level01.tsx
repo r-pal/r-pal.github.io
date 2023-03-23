@@ -60,7 +60,7 @@ const Level01: React.FC<Level01Props> = ({
     s.mousePressed = () => {
       let d = s.dist(s.mouseX, s.mouseY, x, y);
       if (d < diameter) {
-        y = y + 100;
+        y = y + 300;
       }
     };
   };
