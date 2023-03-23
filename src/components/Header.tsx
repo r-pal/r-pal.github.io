@@ -15,8 +15,7 @@ const Header: React.FC<HeaderProps> = ({
   level,
   message,
   startGame,
-}) => {
-  return (
+}) => (
     <div className="bg-[#3A3042] flex justify-between px-2">
       <h1 className="text-[#EDFFD9] h-[35px] text-4xl xl:text-7xl xl:h-[66px]">
         CIRCLES
@@ -39,7 +38,6 @@ const Header: React.FC<HeaderProps> = ({
         </label>
       </button>
     </div>
-  );
-};
+);
 
 export default Header;

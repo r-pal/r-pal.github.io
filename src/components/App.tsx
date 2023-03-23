@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import CircleSettings, { Settings } from "./CircleSettings";
 import Game from "./Game";
 import Header from "./Header";
+import Level00 from "./Level00";
 
 const App: React.FC = () => {
-  const [gameResult, setGameResult] = useState<"won" | "lost">();
+  const [gameResult, setGameResult] = useState<"won" | "lost" | undefined>(undefined);
   const [gameLive, setGameLive] = useState(false);
   const [settings, setSettings] = useState<Settings>();
   const [level, setLevel] = useState(1);
@@ -23,6 +24,9 @@ const App: React.FC = () => {
       setLevel(level + 1);
     }
   }, [gameResult]);
+  console.log("gameLive: ", gameLive)
+  console.log("gameResult: ", gameResult)
+  console.log("settings:,",   settings)
 
   return (
     <div>
@@ -37,15 +41,17 @@ const App: React.FC = () => {
             startGame={startGame}
           />
           <div className="bg-[#315964]">
-            {settings && gameResult === undefined && (
+            {/* {settings && 
+            // gameResult === undefined &&
+            gameLive && (
               <Game
                 settings={settings}
                 setGameResult={setGameResult}
                 setGameLive={setGameLive}
                 level={level}
                 setMessage={setMessage}
-              />
-            )}
+              /> */}
+            {settings && <Level00 settings={settings}/>}
             <h1 className="text-[#EDFFD9] text-5xl md:text-9xl place-content-center grid">
               {gameResult === "won" && "WINNER"}
               {gameResult === "lost" && "YOU LOSE"}
