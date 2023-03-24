@@ -32,11 +32,13 @@ const Level00: React.FC<Level00Props> = ({
         // jiggling
         x = x + s.random(-j, j);
         y = y + s.random(-j, j);
-        // in case it jiggles off screen x-axis:
         if (x < 0) {
           x = s.width;
         }
-        x = x - 1
+        if (x > s.width) {
+          x = 0;
+        }
+        x = x + 1
       }
     };
   };

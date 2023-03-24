@@ -17,12 +17,11 @@ const Header: React.FC<HeaderProps> = ({
   startGame,
 }) => {
 
-  const text = () => 
-  {if (!gameLive && gameResult === undefined) {return "Start"};
-    if (gameResult === "lost") { return "Restart level"};
-   if (gameResult === "won"){return `Level ${level}`};}
-  
-  // : gameResult ? `Level ${level}` : "START"
+  const text = () => {
+   if (!gameLive && gameResult === undefined) {return "Start"};
+   if (gameResult === "lost") { return "Replay"};
+   if (gameResult === "won"){return `Level ${level}`};
+  }
   
   return (
     <div className="bg-[#3A3042] flex justify-between px-2">
@@ -34,7 +33,6 @@ const Header: React.FC<HeaderProps> = ({
           form="settings"
           type="submit"
           text={text()}
-          // variant
           header
         />
       </div>}

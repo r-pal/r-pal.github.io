@@ -2,25 +2,25 @@ import { P5CanvasInstance, ReactP5Wrapper } from "react-p5-wrapper";
 import { canvasWidth, canvasHeight } from "../constants/canvas";
 import { Settings } from "./CircleSettings";
 
-type Level02Props = {
+type Level04Props = {
   settings: Settings;
   setGameResult: (value: "won" | "lost" | undefined) => void;
   setGameLive: (value: boolean) => void;
   setMessage: (value: string) => void;
 };
 
-const Level02: React.FC<Level02Props> = ({
+const Level04: React.FC<Level04Props> = ({
   settings,
   setGameResult,
   setGameLive,
   setMessage,
 }) => {
-  let diameter = settings.radius * 2;
+  const diameter = settings.radius * 4;
+  const j = settings.jiggliness * 4;
 
   const sketch = (s: P5CanvasInstance) => {
     let x: number;
     let y: number;
-
     setMessage("The circle wants clicks");
     s.setup = () => {
       s.createCanvas(canvasWidth, canvasHeight);
@@ -31,45 +31,37 @@ const Level02: React.FC<Level02Props> = ({
     s.draw = () => {
       s.background(50, 89, 100);
       for (let i = 0; i < 6; i++) {
-      x = s.random(0, s.width);
-      y = s.random(s.height / 2, s.height / 3);
         s.ellipse(x, y, diameter, diameter);
-        s.fill(settings.colour1);
-        s.stroke(settings.colour2);
+        s.fill("#DB9D47");
+        s.stroke(settings.colour1);
         // jiggling
-        // x = x + s.random(-j, j);
-        // y = y + s.random(-j, j);
-        // // lose condition
-        if (diameter > s.height) {
+        x = x + s.random(-j, j);
+        y = y + s.random(-j, j);
+        // lose condition
+        if (y < 0) {
           setGameResult("lost");
           setGameLive(false);
           setMessage("");
         }
         // win condition
-        if (diameter < 25) {
+        if (y >= s.height) {
           setGameResult("won");
           setGameLive(false);
           setMessage("");
         }
         // in case it jiggles off screen x-axis:
-        if (x < 0) {
-          x = s.width;
+        if (x > s.width) {
+          x = 0;
         }
-        if (y < 0) {
-          y = s.height;
-        }
-        diameter = diameter + 0.1
+        x = x + 1;
+        y = y - 1;
       }
     };
-
-    s.half_speed = () => {
-      s.speed(0.5);
-    }
 
     s.mousePressed = () => {
       let d = s.dist(s.mouseX, s.mouseY, x, y);
       if (d < diameter) {
-        diameter = diameter - 75;
+        y = y + 200;
       }
     };
   };
@@ -77,4 +69,4 @@ const Level02: React.FC<Level02Props> = ({
   return <ReactP5Wrapper sketch={sketch} />;
 };
 
-export default Level02;
+export default Level04;
