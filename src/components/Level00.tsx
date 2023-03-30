@@ -15,7 +15,7 @@ const Level00: React.FC<Level00Props> = ({ settings }) => {
     let y: number;
     s.setup = () => {
       s.createCanvas(canvasWidth, canvasHeight);
-      x = s.width;
+      x = s.random(0, s.width - 100);
       y = s.height / 2;
     };
 
