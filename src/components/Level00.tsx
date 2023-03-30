@@ -2,15 +2,14 @@ import { P5CanvasInstance, ReactP5Wrapper } from "react-p5-wrapper";
 import { canvasWidth, canvasHeight } from "../constants/canvas";
 import { Settings } from "./CircleSettings";
 
-
 type Level00Props = {
   settings: Settings;
+  style: {
+    zIndex: number;
+  };
 };
 
-const Level00: React.FC<Level00Props> = ({
-  settings,
-}) => {
-
+const Level00: React.FC<Level00Props> = ({ settings }) => {
   const diameter = settings.radius * 2;
   const j = settings.jiggliness;
 
@@ -38,7 +37,7 @@ const Level00: React.FC<Level00Props> = ({
         if (x > s.width) {
           x = 0;
         }
-        x = x + 1
+        x = x + 1;
       }
     };
   };

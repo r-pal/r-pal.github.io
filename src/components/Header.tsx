@@ -7,6 +7,9 @@ type HeaderProps = {
   level: number;
   message: string;
   startGame: () => void;
+  style: {
+    zIndex: number;
+  };
 };
 
 const Header: React.FC<HeaderProps> = ({
@@ -16,26 +19,28 @@ const Header: React.FC<HeaderProps> = ({
   message,
   startGame,
 }) => {
-
   const text = () => {
-   if (!gameLive && gameResult === undefined) {return "Start"};
-   if (gameResult === "lost") { return "Replay"};
-   if (gameResult === "won"){return `Level ${level}`};
-  }
-  
+    if (!gameLive && gameResult === undefined) {
+      return "Start";
+    }
+    if (gameResult === "lost") {
+      return "Replay";
+    }
+    if (gameResult === "won") {
+      return `Level ${level}`;
+    }
+  };
+
   return (
     <div className="bg-[#3A3042] flex justify-between px-2">
       <h1 className="text-[#EDFFD9] h-[35px] text-4xl xl:text-7xl xl:h-[66px]">
-        <a href="https://r-pal.github.io" >CIRCLES</a>
+        <a href="https://r-pal.github.io">CIRCLES</a>
       </h1>
-      {!gameLive && <div onClick={() => startGame()} className="self-center">
-        <Button
-          form="settings"
-          type="submit"
-          text={text()}
-          header
-        />
-      </div>}
+      {!gameLive && (
+        <div onClick={() => startGame()} className="self-center">
+          <Button form="settings" type="submit" text={text()} header />
+        </div>
+      )}
       <div className="text-[#EDFFD9] self-center">{message}</div>
       {/* <button>
         <label htmlFor="settings-drawer">
@@ -43,6 +48,7 @@ const Header: React.FC<HeaderProps> = ({
         </label>
       </button> */}
     </div>
-);}
+  );
+};
 
 export default Header;
