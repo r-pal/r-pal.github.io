@@ -12,5 +12,7 @@
 @layer base { 
     h1 { @apply font-header;
     } 
+    h2 { @apply font-header;
+    } 
 }
 

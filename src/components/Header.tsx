@@ -7,9 +7,6 @@ type HeaderProps = {
   level: number;
   message: string;
   startGame: () => void;
-  style: {
-    zIndex: number;
-  };
 };
 
 const Header: React.FC<HeaderProps> = ({

@@ -13,15 +13,17 @@ const App: React.FC = () => {
     radius: 60,
     colour1: "#3A3042",
     colour2: "#EDFFD9",
-    jiggliness: 5,
+    jiggliness: 3,
   });
   const [level, setLevel] = useState(1);
   const [message, setMessage] = useState("");
+  const [timeElapsed, setTimeElapsed] = useState(0);
 
   const startGame = () => {
     if (gameLive === false) {
       setGameResult(undefined);
       setGameLive(true);
+      setTimeElapsed(0);
     }
     return;
   };
@@ -31,19 +33,28 @@ const App: React.FC = () => {
       setLevel(level + 1);
     }
   }, [gameResult]);
-  console.log("settings: ", settings);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout | undefined;
+    if (gameLive) {
+      interval = setInterval(() => setTimeElapsed((prev) => prev + 1), 1000);
+    } else {
+      clearInterval(interval);
+      setTimeElapsed(0);
+    }
+    return () => clearInterval(interval);
+  }, [gameLive]);
 
   return (
-    <div className="relative">
+    <>
       <Header
         gameLive={gameLive}
         gameResult={gameResult}
         level={level}
         message={message}
         startGame={startGame}
-        style={{ zIndex: 100 }}
       />
-      <div className="bg-[#315964] relative z-10">
+      <div className="bg-[#315964] relative">
         <div>
           {gameLive ? (
             <Game
@@ -54,17 +65,20 @@ const App: React.FC = () => {
               setMessage={setMessage}
             />
           ) : (
-            <Level00 settings={settings} style={{ zIndex: 1 }} />
+            <Level00 settings={settings} />
           )}
         </div>
-        <div className="absolute top-0 left-0 z-20 w-full">
-          <h1 className="text-[#EDFFD9] text-5xl md:text-9xl place-content-center grid ">
+        <div className="absolute right-0 bottom-0 transform -translate-x-1/2 -translate-y-1/2 z-50">
+          <h1
+            className={`text-[#EDFFD9] text-5xl md:text-9xl place-content-center grid pointer-events-none`}
+          >
             {gameResult === "won" && "WINNER"}
             {gameResult === "lost" && "YOU LOSE"}
+            {gameLive && timeElapsed}
           </h1>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

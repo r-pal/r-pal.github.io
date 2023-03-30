@@ -4,9 +4,6 @@ import { Settings } from "./CircleSettings";
 
 type Level00Props = {
   settings: Settings;
-  style: {
-    zIndex: number;
-  };
 };
 
 const Level00: React.FC<Level00Props> = ({ settings }) => {
