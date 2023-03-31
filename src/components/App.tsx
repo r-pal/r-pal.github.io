@@ -37,7 +37,7 @@ const App: React.FC = () => {
   useEffect(() => {
     let interval: NodeJS.Timeout | undefined;
     if (gameLive) {
-      interval = setInterval(() => setTimeElapsed((prev) => prev + 1), 1000);
+      interval = setInterval(() => setTimeElapsed((prev) => prev + 1), 100);
     } else {
       clearInterval(interval);
       setTimeElapsed(0);
@@ -57,25 +57,31 @@ const App: React.FC = () => {
       <div className="bg-[#315964] relative">
         <div>
           {gameLive ? (
-            <Game
-              settings={settings}
-              setGameResult={setGameResult}
-              setGameLive={setGameLive}
-              level={level}
-              setMessage={setMessage}
-            />
+            <>
+              <Game
+                settings={settings}
+                setGameResult={setGameResult}
+                setGameLive={setGameLive}
+                level={level}
+                setMessage={setMessage}
+              />
+              <div className="absolute left-10 bottom-10 -translate-y-1/2 z-50 ">
+                <h1 className="text-[#EDFFD9] text-5xl md:text-7xl pointer-events-none select-none">
+                  {timeElapsed}
+                </h1>
+              </div>
+            </>
           ) : (
-            <Level00 settings={settings} />
+            <>
+              <Level00 settings={settings} />
+              <div className="absolute top-1/2 inset-0 flex justify-center z-50 ">
+                <h1 className="text-[#EDFFD9] text-7xl md:text-9xl pointer-events-none select-none">
+                  {gameResult === "won" && "WINNER"}
+                  {gameResult === "lost" && "YOU LOSE"}
+                </h1>
+              </div>
+            </>
           )}
-        </div>
-        <div className="absolute right-0 bottom-0 transform -translate-x-1/2 -translate-y-1/2 z-50">
-          <h1
-            className={`text-[#EDFFD9] text-5xl md:text-9xl place-content-center grid pointer-events-none`}
-          >
-            {gameResult === "won" && "WINNER"}
-            {gameResult === "lost" && "YOU LOSE"}
-            {gameLive && timeElapsed}
-          </h1>
         </div>
       </div>
     </>

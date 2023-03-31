@@ -29,8 +29,8 @@ const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <div className="bg-[#3A3042] flex justify-between px-2">
-      <h1 className="text-[#EDFFD9] h-[35px] text-4xl xl:text-7xl xl:h-[66px]">
+    <div className="bg-[#3A3042] flex justify-between px-2 select-none">
+      <h1 className="text-[#EDFFD9] h-[35px] text-4xl xl:text-7xl xl:h-[66px] left-2">
         <a href="https://r-pal.github.io">CIRCLES</a>
       </h1>
       {!gameLive && (
