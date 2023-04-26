@@ -58,16 +58,16 @@ const Level03: React.FC<Level03Props> = ({
 
       s.draw = () => {
         // without s.background() the circle produces chemtrails
-        const yGateNumber = Math.ceil(s.height / d);
-        const xGateNumber = Math.ceil(s.width / d);
-        const yGates = Array.from({ length: yGateNumber }, (_, i) => ({
-          start: i === 0 ? 0 : i * d + 1,
-          end: (i + 1) * d,
-        }));
-        const xGates = Array.from({ length: xGateNumber }, (_, i) => ({
-          start: i === 0 ? 0 : i * d + 1,
-          end: (i + 1) * d,
-        }));
+        // const yGateNumber = Math.ceil(s.height / d);
+        // const xGateNumber = Math.ceil(s.width / d);
+        // const yGates = Array.from({ length: yGateNumber }, (_, i) => ({
+        //   start: i === 0 ? 0 : i * d + 1,
+        //   end: (i + 1) * d,
+        // }));
+        // const xGates = Array.from({ length: xGateNumber }, (_, i) => ({
+        //   start: i === 0 ? 0 : i * d + 1,
+        //   end: (i + 1) * d,
+        // }));
 
         for (let i = 0; i < 6; i++) {
           s.ellipse(x, y, d, d);
@@ -94,43 +94,43 @@ const Level03: React.FC<Level03Props> = ({
             // if y value falls between value a and value b in an object of the gates array
             // then add to set of gatesEntered
             // when gatesEntered === gates.length, game won
-            const gate = yGates.find(
-              (gate) => y >= gate.start && y <= gate.end
-            );
-            const gateIndex = gate ? yGates.indexOf(gate) : -1;
-            yGatesEntered.push(gateIndex);
-            const uniqueGatesEntered: number[] = Array.from(
-              new Set(yGatesEntered)
-            );
-            console.log(`Count of Ygates entered: ${uniqueGatesEntered}`);
-            if (uniqueGatesEntered.length === yGates.length) {
-              setAllYGatesEntered(true);
-              if (allXGatesEntered) {
-                setGameResult("won");
-                setGameLive(false);
-                setMessage("");
-              }
-            }
+            // const gate = yGates.find(
+            //   (gate) => y >= gate.start && y <= gate.end
+            // );
+            // const gateIndex = gate ? yGates.indexOf(gate) : -1;
+            // yGatesEntered.push(gateIndex);
+            // const uniqueGatesEntered: number[] = Array.from(
+            //   new Set(yGatesEntered)
+            // );
+            // console.log(`Count of Ygates entered: ${uniqueGatesEntered}`);
+            // if (uniqueGatesEntered.length === yGates.length) {
+            //   setAllYGatesEntered(true);
+            //   if (allXGatesEntered) {
+            //     setGameResult("won");
+            //     setGameLive(false);
+            //     setMessage("");
+            //   }
+            // }
           }
           //exit bottom (x-gates)
           if (y > s.height) {
             y = 0;
-            const gate = xGates.find(
-              (gate) => x >= gate.start && x <= gate.end
-            );
-            const gateIndex = gate ? xGates.indexOf(gate) : -1;
-            xGatesEntered.push(gateIndex);
-            const uniqueGatesEntered: number[] = Array.from(
-              new Set(xGatesEntered)
-            );
-            console.log(`Count of Xgates entered: ${uniqueGatesEntered}`);
-            if (uniqueGatesEntered.length === xGates.length) {
-              setAllXGatesEntered(true);
-              if (allYGatesEntered) {
-                setGameResult("won");
-                setGameLive(false);
-              }
-            }
+            // const gate = xGates.find(
+            //   (gate) => x >= gate.start && x <= gate.end
+            // );
+            // const gateIndex = gate ? xGates.indexOf(gate) : -1;
+            // xGatesEntered.push(gateIndex);
+            // const uniqueGatesEntered: number[] = Array.from(
+            //   new Set(xGatesEntered)
+            // );
+            // console.log(`Count of Xgates entered: ${uniqueGatesEntered}`);
+            // if (uniqueGatesEntered.length === xGates.length) {
+            //   setAllXGatesEntered(true);
+            //   if (allYGatesEntered) {
+            //     setGameResult("won");
+            //     setGameLive(false);
+            //   }
+            // }
           }
           // movement across canvas
           y = y + 1;
