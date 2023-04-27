@@ -20,31 +20,14 @@ const Level03: React.FC<Level03Props> = ({
   const j = settings.jiggliness;
   const [fill, setFill] = useState(settings.colour2);
   const [stroke, setStroke] = useState(settings.colour1);
-  const [allYGatesEntered, setAllYGatesEntered] = useState(false);
-  const [allXGatesEntered, setAllXGatesEntered] = useState(false);
   useEffect(() => {
-    setMessage("It's a waiting game");
+    setMessage("Hit that line");
   }, []);
-  useEffect(() => {
-    if (allXGatesEntered === true && allXGatesEntered === true) {
-      setMessage("All covered");
-    }
-    if (allYGatesEntered === true) {
-      setMessage("All of the left side - covered");
-    }
-    if (allXGatesEntered === true) {
-      setMessage("All of the bottom - covered");
-    }
-  }, [allYGatesEntered, allXGatesEntered]);
 
   const sketch = useCallback(
     (s: P5CanvasInstance) => {
       let x: number;
       let y: number;
-      const xGatesEntered: number[] = [];
-      const yGatesEntered: number[] = [];
-      let colour1 = settings.colour1;
-      let colour2 = settings.colour2;
 
       s.setup = () => {
         s.createCanvas(canvasWidth, canvasHeight);
@@ -57,18 +40,11 @@ const Level03: React.FC<Level03Props> = ({
       };
 
       s.draw = () => {
+        let rectX = 50;
+        let rectY = 50;
+        s.rect(rectX, rectY, 5, d * 2);
+        s.fill(stroke);
         // without s.background() the circle produces chemtrails
-        // const yGateNumber = Math.ceil(s.height / d);
-        // const xGateNumber = Math.ceil(s.width / d);
-        // const yGates = Array.from({ length: yGateNumber }, (_, i) => ({
-        //   start: i === 0 ? 0 : i * d + 1,
-        //   end: (i + 1) * d,
-        // }));
-        // const xGates = Array.from({ length: xGateNumber }, (_, i) => ({
-        //   start: i === 0 ? 0 : i * d + 1,
-        //   end: (i + 1) * d,
-        // }));
-
         for (let i = 0; i < 6; i++) {
           s.ellipse(x, y, d, d);
           s.fill(fill);
@@ -89,66 +65,34 @@ const Level03: React.FC<Level03Props> = ({
           // exit left (y-gates)
           if (x <= 0) {
             x = s.width;
-            // make array of object gates where an object == (start, end) and where the length === gateNumber
-            // iterate through gates array
-            // if y value falls between value a and value b in an object of the gates array
-            // then add to set of gatesEntered
-            // when gatesEntered === gates.length, game won
-            // const gate = yGates.find(
-            //   (gate) => y >= gate.start && y <= gate.end
-            // );
-            // const gateIndex = gate ? yGates.indexOf(gate) : -1;
-            // yGatesEntered.push(gateIndex);
-            // const uniqueGatesEntered: number[] = Array.from(
-            //   new Set(yGatesEntered)
-            // );
-            // console.log(`Count of Ygates entered: ${uniqueGatesEntered}`);
-            // if (uniqueGatesEntered.length === yGates.length) {
-            //   setAllYGatesEntered(true);
-            //   if (allXGatesEntered) {
-            //     setGameResult("won");
-            //     setGameLive(false);
-            //     setMessage("");
-            //   }
-            // }
           }
           //exit bottom (x-gates)
           if (y > s.height) {
             y = 0;
-            // const gate = xGates.find(
-            //   (gate) => x >= gate.start && x <= gate.end
-            // );
-            // const gateIndex = gate ? xGates.indexOf(gate) : -1;
-            // xGatesEntered.push(gateIndex);
-            // const uniqueGatesEntered: number[] = Array.from(
-            //   new Set(xGatesEntered)
-            // );
-            // console.log(`Count of Xgates entered: ${uniqueGatesEntered}`);
-            // if (uniqueGatesEntered.length === xGates.length) {
-            //   setAllXGatesEntered(true);
-            //   if (allYGatesEntered) {
-            //     setGameResult("won");
-            //     setGameLive(false);
-            //   }
-            // }
           }
           // movement across canvas
-          y = y + 1;
+          // y = y + 1;
           x = x - 1;
         }
+        // lose condition
+        // if (d > s.height) {
+        //   setGameResult("lost");
+        //   setGameLive(false);
+        //   setMessage("");
+        // }
+        // win condition
+        if (y >= 50 - d && y <= 50 + d) {
+          setGameResult("won");
+          setGameLive(false);
+          setMessage("");
+        }
+        console.log(y);
       };
 
       s.mousePressed = () => {
         let distance = s.dist(s.mouseX, s.mouseY, x, y);
         if (distance < d) {
-          if (fill === colour1) {
-            setFill(colour2);
-            setStroke(colour1);
-          }
-          if (fill === colour2) {
-            setFill(colour1);
-            setStroke(colour2);
-          }
+          y = y + 300;
         }
       };
     },

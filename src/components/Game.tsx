@@ -27,11 +27,11 @@ const Game: React.FC<GameProps> = ({
       setMessage={setMessage}
     />,
     <Level02
-    settings={settings}
-    setGameResult={setGameResult}
-    setGameLive={setGameLive}
-    setMessage={setMessage}
-  />,
+      settings={settings}
+      setGameResult={setGameResult}
+      setGameLive={setGameLive}
+      setMessage={setMessage}
+    />,
     <Level03
       settings={settings}
       setGameResult={setGameResult}
@@ -46,9 +46,7 @@ const Game: React.FC<GameProps> = ({
     />,
   ];
 
-  return <>
-  {levels[level - 1]}
-  </>;
+  return <>{levels[2]}</>;
 };
 
 export default Game;

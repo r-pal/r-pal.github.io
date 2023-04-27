@@ -38,7 +38,7 @@ const Level02: React.FC<Level02Props> = ({
           s.ellipse(x, y, diameter, diameter);
           s.fill(settings.colour1);
           s.stroke(settings.colour2);
-          // // lose condition
+          // lose condition
           if (diameter > s.height) {
             setGameResult("lost");
             setGameLive(false);
