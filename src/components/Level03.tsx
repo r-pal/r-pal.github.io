@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { P5CanvasInstance, ReactP5Wrapper } from "react-p5-wrapper";
 import { canvasHeight, canvasWidth } from "../constants/canvas";
 import { Settings } from "./CircleSettings";
@@ -17,29 +17,27 @@ const Level03: React.FC<Level03Props> = ({
   setMessage,
 }) => {
   const j = settings.jiggliness;
-  const [fill, setFill] = useState(settings.colour1);
-  const [stroke, setStroke] = useState(settings.colour2);
+  const r = settings.radius;
   useEffect(() => {
-    setMessage("It's a waiting game");
+    setMessage("Large screen = large wait");
   }, []);
 
   const sketch = useCallback(
     (s: P5CanvasInstance) => {
       let x: number;
       let y: number;
+      // Initialize visitedPixels as a 2D array with the same size as the canvas.
+      // block size is 10 pixels to speed up process
       let visitedPixels: boolean[][];
-      let colour1 = settings.colour1;
-      let colour2 = settings.colour2;
+      const blockSize = 10;
+      visitedPixels = Array(Math.ceil(canvasWidth / blockSize))
+        .fill(false)
+        .map(() => Array(Math.ceil(canvasHeight / blockSize)).fill(false));
 
       s.setup = () => {
         s.createCanvas(canvasWidth, canvasHeight);
         x = Math.round(s.random(0, s.width));
         y = Math.round(s.random(0, s.height));
-
-        // Initialize visitedPixels as a 2D array with the same size as the canvas.
-        visitedPixels = Array(canvasWidth)
-          .fill(false)
-          .map(() => Array(canvasHeight).fill(false));
       };
 
       s.windowResized = () => {
@@ -47,23 +45,17 @@ const Level03: React.FC<Level03Props> = ({
       };
 
       s.draw = () => {
-        // Draw the ellipse and fill/stroke.
-        s.ellipse(x, y, settings.radius * 2, settings.radius * 2);
-        s.fill(fill);
-        s.stroke(stroke);
+        s.ellipse(x, y, r * 2, r * 2);
+        s.fill(settings.colour1);
+        s.stroke(settings.colour2);
 
-        // move the circle
-        x = x - 10;
-        y = y - 10;
-
-        //enter right
-        if (x > s.width) {
-          x = 0;
-        }
-        //enter top
-        if (y <= 0) {
-          y = s.height;
-        }
+        // move the circle, and loop around the canvas
+        x = x + 5;
+        y = y - 5;
+        if (x > s.width) x = 0;
+        if (y > s.height) y = 0;
+        if (x < 0) x = s.width;
+        if (y < 0) y = s.height;
 
         // Jiggle the circle.
         x = x + s.random(-j, j);
@@ -80,22 +72,24 @@ const Level03: React.FC<Level03Props> = ({
         );
 
         // Iterate over the circle's area.
-        for (let dx = -settings.radius; dx <= settings.radius; dx++) {
-          for (let dy = -settings.radius; dy <= settings.radius; dy++) {
+        for (let i = -r; i <= r; i++) {
+          for (let j = -r; j <= r; j++) {
             // Calculate the actual coordinates of the pixel.
-            const pixelX = currentPixelX + dx;
-            const pixelY = currentPixelY + dy;
+            const pixelX = currentPixelX + i;
+            const pixelY = currentPixelY + j;
 
             // Check if the pixel is within the circle and the canvas.
             if (
-              dx * dx + dy * dy <= settings.radius * settings.radius &&
+              i * i + j * j <= r * r &&
               pixelX >= 0 &&
               pixelX < canvasWidth &&
               pixelY >= 0 &&
               pixelY < canvasHeight
             ) {
               // Mark the pixel as visited.
-              visitedPixels[pixelX][pixelY] = true;
+              visitedPixels[Math.floor(pixelX / blockSize)][
+                Math.floor(pixelY / blockSize)
+              ] = true;
             }
           }
         }
@@ -106,27 +100,8 @@ const Level03: React.FC<Level03Props> = ({
         if (allVisited) {
           setGameResult("won");
           setGameLive(false);
+          setMessage("");
         }
-
-        // Make the circle loop around the canvas.
-        if (x > s.width) x = 0;
-        if (y > s.height) y = 0;
-        if (x < 0) x = s.width;
-        if (y < 0) y = s.height;
-      };
-
-      s.mousePressed = () => {
-        console.log(visitedPixels);
-        // let distance = s.dist(s.mouseX, s.mouseY, x, y);
-        // if (distance < settings.radius) {
-        //   if (fill === colour1) {
-        //     setFill(colour2);
-        //     setStroke(colour1);
-        //   } else {
-        //     setFill(colour1);
-        //     setStroke(colour2);
-        //   }
-        // }
       };
     },
     [settings, setGameResult, setGameLive, setMessage]
