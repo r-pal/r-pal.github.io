@@ -46,7 +46,7 @@ const Game: React.FC<GameProps> = ({
     />,
   ];
 
-  return <>{levels[2]}</>;
+  return <>{levels[level - 1]}</>;
 };
 
 export default Game;
