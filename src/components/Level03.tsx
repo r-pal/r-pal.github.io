@@ -3,6 +3,8 @@ import { P5CanvasInstance, ReactP5Wrapper } from "react-p5-wrapper";
 import { canvasHeight, canvasWidth } from "../constants/canvas";
 import { Settings } from "./CircleSettings";
 
+//TODO: estimate wait time based on screen size
+
 type Level03Props = {
   settings: Settings;
   setGameResult: (value: "won" | "lost" | undefined) => void;

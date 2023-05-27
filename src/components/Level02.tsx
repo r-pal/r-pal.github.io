@@ -22,6 +22,10 @@ const Level02: React.FC<Level02Props> = ({
     (s: P5CanvasInstance) => {
       let x: number;
       let y: number;
+      const isCursorInsideCircle = () => {
+        let d = s.dist(s.mouseX, s.mouseY, x, y);
+        return d < diameter / 2;
+      };
 
       setMessage("The circle wants clicks");
       s.setup = () => {
@@ -58,6 +62,11 @@ const Level02: React.FC<Level02Props> = ({
             y = s.height;
           }
           diameter = diameter + 0.1;
+          if (isCursorInsideCircle()) {
+            s.cursor("pointer");
+          } else {
+            s.cursor("default");
+          }
         }
       };
 
