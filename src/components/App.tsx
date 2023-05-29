@@ -23,7 +23,6 @@ const App: React.FC = () => {
     if (gameLive === false) {
       setGameResult(undefined);
       setGameLive(true);
-      setTimeElapsed(0);
     }
     return;
   };
@@ -40,7 +39,6 @@ const App: React.FC = () => {
       interval = setInterval(() => setTimeElapsed((prev) => prev + 1), 100);
     } else {
       clearInterval(interval);
-      setTimeElapsed(0);
     }
     return () => clearInterval(interval);
   }, [gameLive]);
@@ -76,7 +74,7 @@ const App: React.FC = () => {
               <Level00 settings={settings} />
               <div className="absolute top-1/2 inset-0 flex justify-center z-50 ">
                 <h1 className="text-[#EDFFD9] text-7xl md:text-9xl pointer-events-none select-none">
-                  {gameResult === "won" && "WINNER"}
+                  {gameResult === "won" && "WINNER" && timeElapsed}
                   {gameResult === "lost" && "YOU LOSE"}
                 </h1>
               </div>

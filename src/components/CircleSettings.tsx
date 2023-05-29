@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { colours } from "../constants/colours";
 import clsx from "clsx";
 import { secondaryColour } from "../utils/textColour";
@@ -24,13 +24,11 @@ const CircleSettings: React.FC<CircleSettingsProps> = ({ setSettings }) => {
     setSettings(data);
   };
 
-  
-
   return (
     <div>
       <form id="settings" onSubmit={handleSubmit(onSubmit)}>
         <div className="w-full flex flex-col items-left gap-3 text-nyanza border-nyanza accent-nyanza">
-          <div >
+          <div>
             Size
             <input
               type="range"
@@ -60,7 +58,9 @@ const CircleSettings: React.FC<CircleSettingsProps> = ({ setSettings }) => {
                   key={c.primary}
                   value={c.primary}
                   className={clsx(`bg-[${c.primary}] text-[${c.secondary}]`)}
-                >{c.label}</option>
+                >
+                  {c.label}
+                </option>
               ))}
             </select>
           </div>
