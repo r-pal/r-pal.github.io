@@ -71,7 +71,7 @@ const App: React.FC = () => {
             </>
           ) : (
             <>
-              <Level00 settings={settings} />
+              <Level00 settings={settings} startGame={startGame} />
               <div className="absolute top-1/2 inset-0 flex justify-center z-50 ">
                 <h1 className="text-[#EDFFD9] text-7xl md:text-9xl pointer-events-none select-none">
                   {gameResult === "won" && "WINNER" && timeElapsed}
