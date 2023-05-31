@@ -1,5 +1,6 @@
+import { useCallback, useEffect } from "react";
 import { P5CanvasInstance, ReactP5Wrapper } from "react-p5-wrapper";
-import { canvasWidth, canvasHeight } from "../constants/canvas";
+import { canvasHeight, canvasWidth } from "../constants/canvas";
 import { Settings } from "./CircleSettings";
 
 type Level04Props = {
@@ -15,56 +16,92 @@ const Level04: React.FC<Level04Props> = ({
   setGameLive,
   setMessage,
 }) => {
-  const diameter = settings.radius * 4;
-  const j = settings.jiggliness * 4;
+  const r = settings.radius;
 
-  const sketch = (s: P5CanvasInstance) => {
-    let x: number;
-    let y: number;
-    setMessage("The circle wants clicks");
-    s.setup = () => {
-      s.createCanvas(canvasWidth, canvasHeight);
-      x = s.random(0, s.width);
-      y = s.random(s.height / 2, s.height / 3);
-    };
+  useEffect(() => {
+    setMessage("Large screen = large wait");
+  }, []);
 
-    s.draw = () => {
-      s.background(50, 89, 100);
-      for (let i = 0; i < 6; i++) {
-        s.ellipse(x, y, diameter, diameter);
-        s.fill("#DB9D47");
-        s.stroke(settings.colour1);
-        // jiggling
-        x = x + s.random(-j, j);
-        y = y + s.random(-j, j);
-        // lose condition
-        if (y < 0) {
-          setGameResult("lost");
-          setGameLive(false);
-          setMessage("");
+  const sketch = useCallback(
+    (s: P5CanvasInstance) => {
+      let x: number;
+      let y: number;
+      let angle = 0;
+      let spiralRadius = 0;
+
+      const blockSize = 10;
+      const visitedPixels = Array(Math.ceil(canvasWidth / blockSize))
+        .fill(false)
+        .map(() => Array(Math.ceil(canvasHeight / blockSize)).fill(false));
+
+      s.setup = () => {
+        s.createCanvas(canvasWidth, canvasHeight);
+        // Initialize the circle at the center of the canvas
+        x = s.width / 2;
+        y = s.height / 2;
+      };
+
+      s.windowResized = () => {
+        s.resizeCanvas(s.windowWidth, s.windowHeight);
+      };
+
+      s.draw = () => {
+        s.ellipse(x, y, r * 2, r * 2);
+        s.fill(settings.colour1);
+        s.stroke(settings.colour2);
+
+        angle += 0.1;
+
+        if (x <= 0 || x >= canvasWidth || y <= 0 || y >= canvasHeight) {
+          spiralRadius -= 0.5;
+          if (spiralRadius <= 0) {
+            spiralRadius = 0;
+          }
+        } else {
+          spiralRadius += 0.5;
         }
-        // win condition
-        if (y >= s.height) {
+
+        x = s.width / 2 + spiralRadius * Math.cos(angle);
+        y = s.height / 2 + spiralRadius * Math.sin(angle);
+
+        // ensure x and y are within the canvas bounds
+        x = Math.min(Math.max(x, 0), canvasWidth - 1);
+        y = Math.min(Math.max(y, 0), canvasHeight - 1);
+
+        // Iterate over the circle's area.
+        for (let i = -r; i <= r; i++) {
+          for (let j = -r; j <= r; j++) {
+            const pixelX = Math.round(x) + i;
+            const pixelY = Math.round(y) + j;
+
+            // Check if the pixel is within the circle and the canvas.
+            if (
+              i * i + j * j <= r * r &&
+              pixelX >= 0 &&
+              pixelX < canvasWidth &&
+              pixelY >= 0 &&
+              pixelY < canvasHeight
+            ) {
+              // Mark the pixel as visited.
+              visitedPixels[Math.floor(pixelX / blockSize)][
+                Math.floor(pixelY / blockSize)
+              ] = true;
+            }
+          }
+        }
+
+        // Check if all pixels have been visited.
+        const allVisited = visitedPixels.every((row) => row.every(Boolean));
+
+        if (allVisited) {
           setGameResult("won");
           setGameLive(false);
           setMessage("");
         }
-        // in case it jiggles off screen x-axis:
-        if (x > s.width) {
-          x = 0;
-        }
-        x = x + 1;
-        y = y - 1;
-      }
-    };
-
-    s.mousePressed = () => {
-      let d = s.dist(s.mouseX, s.mouseY, x, y);
-      if (d < diameter) {
-        y = y + 200;
-      }
-    };
-  };
+      };
+    },
+    [settings, setGameResult, setGameLive, setMessage]
+  );
 
   return <ReactP5Wrapper sketch={sketch} />;
 };
